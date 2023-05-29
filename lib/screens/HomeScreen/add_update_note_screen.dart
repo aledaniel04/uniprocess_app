@@ -5,45 +5,45 @@ import 'package:uniprocess_app/screens/HomeScreen/home_screen.dart';
 import 'package:uniprocess_app/screens/HomeScreen/model_note.dart';
 
 // ignore: must_be_immutable
-class AddUpdateTask extends StatefulWidget {
-  int? todoid;
-  String? todoTitle;
-  String? todoDesc;
-  String? todoDT;
+class AddUpdateNote extends StatefulWidget {
+  int? noteid;
+  String? noteTitle;
+  String? noteDesc;
+  String? noteDT;
   bool? update;
 
-  AddUpdateTask(
+  AddUpdateNote(
       {super.key,
-      this.todoid,
-      this.todoTitle,
-      this.todoDesc,
-      this.todoDT,
+      this.noteid,
+      this.noteTitle,
+      this.noteDesc,
+      this.noteDT,
       this.update});
 
   @override
-  State<AddUpdateTask> createState() => _AddUpdateTaskState();
+  State<AddUpdateNote> createState() => _AddUpdateNoteState();
 }
 
-class _AddUpdateTaskState extends State<AddUpdateTask> {
-  DBHelper? dbHelper;
-  late Future<List<TodoModel>> dataList;
+class _AddUpdateNoteState extends State<AddUpdateNote> {
+  DBHelperNote? dbHelperNote;
+  late Future<List<NoteModel>> dataList;
   final _fromkey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    dbHelper = DBHelper();
+    dbHelperNote = DBHelperNote();
     loadData();
   }
 
   loadData() async {
-    dataList = dbHelper!.getDataList();
+    dataList = dbHelperNote!.getDataList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final titleController = TextEditingController(text: widget.todoTitle);
-    final descController = TextEditingController(text: widget.todoDesc);
+    final titleController = TextEditingController(text: widget.noteTitle);
+    final descController = TextEditingController(text: widget.noteDesc);
     String appTitle;
     if (widget.update == true) {
       appTitle = "Actualizar nota";
@@ -124,13 +124,13 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                         onTap: () {
                           if (_fromkey.currentState!.validate()) {
                             if (widget.update == true) {
-                              dbHelper!.update(TodoModel(
-                                  id: widget.todoid,
+                              dbHelperNote!.update(NoteModel(
+                                  id: widget.noteid,
                                   title: titleController.text,
                                   desc: descController.text,
-                                  dateandtime: widget.todoDT));
+                                  dateandtime: widget.noteDT));
                             } else {
-                              dbHelper!.insert(TodoModel(
+                              dbHelperNote!.insert(NoteModel(
                                   title: titleController.text,
                                   desc: descController.text,
                                   dateandtime: DateFormat("yMd")

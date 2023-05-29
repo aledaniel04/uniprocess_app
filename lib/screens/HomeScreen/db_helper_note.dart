@@ -4,7 +4,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:uniprocess_app/screens/HomeScreen/model_note.dart';
 
-class DBHelper {
+class DBHelperNote {
   static Database? _db;
 
   Future<Database?> get db async {
@@ -17,14 +17,14 @@ class DBHelper {
 
   initDatabase() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, "Todo.db");
+    String path = join(documentDirectory.path, "Note.db");
     var db = await openDatabase(path, version: 1, onCreate: _createDatabase);
     return db;
   }
 
   _createDatabase(Database db, int version) async {
     //crecaion de la tabla en la base de datos
-    await db.execute("""CREATE TABLE mytodo(
+    await db.execute("""CREATE TABLE mynote(
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         title TEXT NOT NULL, 
         desc TEXT NOT NULL,
@@ -33,27 +33,27 @@ class DBHelper {
   }
 
   //insertar data
-  Future<TodoModel> insert(TodoModel todoModel) async {
+  Future<NoteModel> insert(NoteModel noteModel) async {
     var dbClient = await db;
-    await dbClient?.insert("mytodo", todoModel.toMap());
-    return todoModel;
+    await dbClient?.insert("mynote", noteModel.toMap());
+    return noteModel;
   }
 
-  Future<List<TodoModel>> getDataList() async {
+  Future<List<NoteModel>> getDataList() async {
     await db;
     final List<Map<String, Object?>> queryResult =
-        await _db!.rawQuery("SELECT * FROM mytodo");
-    return queryResult.map((e) => TodoModel.fromMap(e)).toList();
+        await _db!.rawQuery("SELECT * FROM mynote");
+    return queryResult.map((e) => NoteModel.fromMap(e)).toList();
   }
 
   Future<int> delete(int id) async {
     var dbClient = await db;
-    return dbClient!.delete("mytodo", where: "id = ?", whereArgs: [id]);
+    return dbClient!.delete("mynote", where: "id = ?", whereArgs: [id]);
   }
 
-  Future<int> update(TodoModel todoModel) async {
+  Future<int> update(NoteModel noteModel) async {
     var dbClient = await db;
-    return await dbClient!.update("mytodo", todoModel.toMap(),
-        where: "id = ?", whereArgs: [todoModel.id]);
+    return await dbClient!.update("mynote", noteModel.toMap(),
+        where: "id = ?", whereArgs: [noteModel.id]);
   }
 }

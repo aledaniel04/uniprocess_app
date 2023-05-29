@@ -12,18 +12,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  DBHelper? dbHelper;
-  late Future<List<TodoModel>> dataList;
+  DBHelperNote? dbHelperNote;
+  late Future<List<NoteModel>> dataList;
 
   @override
   void initState() {
     super.initState();
-    dbHelper = DBHelper();
+    dbHelperNote = DBHelperNote();
     loadData();
   }
 
   loadData() async {
-    dataList = dbHelper!.getDataList();
+    dataList = dbHelperNote!.getDataList();
   }
 
   @override
@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
               child: FutureBuilder(
                   future: dataList,
-                  builder: (context, AsyncSnapshot<List<TodoModel>> snapshot) {
+                  builder: (context, AsyncSnapshot<List<NoteModel>> snapshot) {
                     if (!snapshot.hasData || snapshot.data == null) {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -105,15 +105,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         shrinkWrap: true,
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
-                          int todoId = snapshot.data![index].id!.toInt();
-                          String todoTitle =
+                          int noteId = snapshot.data![index].id!.toInt();
+                          String noteTitle =
                               snapshot.data![index].title.toString();
-                          String todoDesc =
+                          String noteDesc =
                               snapshot.data![index].desc.toString();
-                          String todoDT =
+                          String noteDT =
                               snapshot.data![index].dateandtime.toString();
                           return Dismissible(
-                            key: ValueKey<int>(todoId),
+                            key: ValueKey<int>(noteId),
                             direction: DismissDirection.endToStart,
                             background: Container(
                               color: Colors.redAccent,
@@ -124,8 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             onDismissed: (DismissDirection direction) {
                               setState(() {
-                                dbHelper!.delete(todoId);
-                                dataList = dbHelper!.getDataList();
+                                dbHelperNote!.delete(noteId);
+                                dataList = dbHelperNote!.getDataList();
                                 snapshot.data!.remove(snapshot.data![index]);
                               });
                             },
@@ -148,12 +148,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       padding:
                                           const EdgeInsets.only(bottom: 10),
                                       child: Text(
-                                        todoTitle,
+                                        noteTitle,
                                         style: const TextStyle(fontSize: 19),
                                       ),
                                     ),
                                     subtitle: Text(
-                                      todoDesc,
+                                      noteDesc,
                                       style: const TextStyle(fontSize: 17),
                                     ),
                                   ),
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          todoDT,
+                                          noteDT,
                                           style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -181,11 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        AddUpdateTask(
-                                                          todoid: todoId,
-                                                          todoTitle: todoTitle,
-                                                          todoDesc: todoDesc,
-                                                          todoDT: todoDT,
+                                                        AddUpdateNote(
+                                                          noteid: noteId,
+                                                          noteTitle: noteTitle,
+                                                          noteDesc: noteDesc,
+                                                          noteDT: noteDT,
                                                           update: true,
                                                         )));
                                           },
@@ -211,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddUpdateTask()));
+              MaterialPageRoute(builder: (context) => AddUpdateNote()));
         },
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
