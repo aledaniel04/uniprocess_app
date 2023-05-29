@@ -93,11 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     } else if (snapshot.data!.isEmpty) {
                       return const Center(
                         child: Text(
-                          "no hay registro",
+                          "Agrega una nota",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                              color: Color.fromARGB(132, 202, 194, 194)),
                         ),
                       );
                     } else {

@@ -46,9 +46,9 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
     final descController = TextEditingController(text: widget.todoDesc);
     String appTitle;
     if (widget.update == true) {
-      appTitle = "update task";
+      appTitle = "Actualizar nota";
     } else {
-      appTitle = "add task";
+      appTitle = "Agregar nota";
     }
 
     return Scaffold(
@@ -80,7 +80,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                             hintText: "titulo de la nota"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "enter some text";
+                            return "este campo es requerido";
                           }
                           return null;
                         },
@@ -101,7 +101,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                             hintText: "escribe una nota aqui"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "enter some text";
+                            return "este campo es requerido";
                           }
                           return null;
                         },
@@ -151,7 +151,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                           margin: const EdgeInsets.symmetric(horizontal: 20),
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           height: 55,
-                          width: 120,
+                          width: 130,
                           decoration: const BoxDecoration(boxShadow: [
                             BoxShadow(
                                 color: Colors.transparent,
@@ -159,7 +159,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                                 spreadRadius: 1)
                           ]),
                           child: const Text(
-                            "agregar",
+                            "Agregar",
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
@@ -185,7 +185,7 @@ class _AddUpdateTaskState extends State<AddUpdateTask> {
                           width: 120,
                           decoration: const BoxDecoration(),
                           child: const Text(
-                            "limpiar",
+                            "Borrar",
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
