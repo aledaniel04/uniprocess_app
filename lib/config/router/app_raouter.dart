@@ -15,10 +15,5 @@ final appRouter = GoRouter(
       name: PeriodScreen.name,
       builder: (context, state) => const PeriodScreen(),
     ),
-    GoRoute(
-      path: "/Career",
-      name: CareerScreen.name,
-      builder: (context, state) => const CareerScreen(),
-    ),
   ],
 );

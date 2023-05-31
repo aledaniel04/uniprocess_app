@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:uniprocess_app/screens/PeriodScreen/db_helper_period.dart';
 import 'package:uniprocess_app/screens/careerScreen/career_screen.dart';
 
@@ -18,7 +17,7 @@ class _PeriodScreenState extends State<PeriodScreen> {
   bool _isLoading = true;
   // This function is used to fetch all data from the database
   void _refreshData() async {
-    final data = await DBHelperPeriod.getAllData();
+    final data = await DBHelperCareer.getAllData();
     setState(() {
       _allData = data;
       _isLoading = false;
@@ -100,19 +99,19 @@ class _PeriodScreenState extends State<PeriodScreen> {
 
 // Insert a new period to the database
   Future<void> _addData() async {
-    await DBHelperPeriod.createData(_periodController.text);
+    await DBHelperCareer.createData(_periodController.text);
     _refreshData();
   }
 
   // Update an existing period
   Future<void> _updateData(int id) async {
-    await DBHelperPeriod.updateData(id, _periodController.text);
+    await DBHelperCareer.updateData(id, _periodController.text);
     _refreshData();
   }
 
   // Delete an item
   void _deleteItem(int id) async {
-    await DBHelperPeriod.deleteData(id);
+    await DBHelperCareer.deleteData(id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.redAccent,
       content: Text('eliminaste un periodo'),
@@ -143,7 +142,14 @@ class _PeriodScreenState extends State<PeriodScreen> {
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
                   onTap: () {
-                    context.pushNamed(CareerScreen.name);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return CareerScreen(
+                          period: _allData[index]["period"],
+                        );
+                      }),
+                    );
                   },
                   title: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
