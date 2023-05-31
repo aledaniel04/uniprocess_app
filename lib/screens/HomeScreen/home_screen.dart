@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uniprocess_app/screens/HomeScreen/add_update_note_screen.dart';
 import 'package:uniprocess_app/screens/HomeScreen/db_helper_note.dart';
 import 'package:uniprocess_app/screens/HomeScreen/model_note.dart';
+import 'package:uniprocess_app/screens/screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String name = "Home_Screen";
@@ -66,7 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Center(
               child: FilledButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(PeriodScreen.name);
+                  },
                   icon: const Icon(Icons.app_registration_outlined),
                   label: const Text("crea una lista"))),
           const SizedBox(
@@ -208,14 +212,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   }))
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddUpdateNote()));
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 300.0, bottom: 35.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddUpdateNote()));
+            },
+            backgroundColor: Color.fromARGB(255, 114, 103, 141),
+            child: const Icon(Icons.add),
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

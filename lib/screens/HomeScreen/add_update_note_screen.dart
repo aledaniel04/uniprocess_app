@@ -138,7 +138,7 @@ class _AddUpdateNoteState extends State<AddUpdateNote> {
                                       .format(DateTime.now())
                                       .toString()));
                             }
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const HomeScreen()));
