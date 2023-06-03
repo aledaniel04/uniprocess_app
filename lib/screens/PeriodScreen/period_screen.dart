@@ -43,58 +43,53 @@ class _PeriodScreenState extends State<PeriodScreen> {
       _periodController.text = existingData['period'];
     }
 
-    showModalBottomSheet(
-        context: context,
-        elevation: 5,
-        isScrollControlled: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 30,
-                left: 15,
-                right: 15,
-                // this will prevent the soft keyboard from covering the text fields
-                bottom: MediaQuery.of(context).viewInsets.bottom + 50,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _periodController,
-                    decoration: const InputDecoration(hintText: 'periodo'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // Save new period
-                        if (id == null) {
-                          await _addData();
-                        }
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Center(
+            child: Text(
+          'Periodo',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        )),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _periodController,
+              decoration: const InputDecoration(hintText: 'Periodo'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            child: Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _periodController.text = '';
+            },
+          ),
+          ElevatedButton(
+            child: Text(id == null ? 'Nuevo Periodo' : 'Actualizar'),
+            onPressed: () async {
+              // Save new period
+              if (id == null) {
+                await _addData();
+              }
 
-                        if (id != null) {
-                          await _updateData(id);
-                        }
+              if (id != null) {
+                await _updateData(id);
+              }
 
-                        // Clear the text fields
-                        _periodController.text = '';
+              // Clear the text fields
+              _periodController.text = '';
 
-                        // Close the bottom sheet
-                        Navigator.of(context).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(18),
-                        child: Text(id == null ? 'Nuevo Perido' : 'Actualizar',
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ));
+              // Close the dialog
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
 // Insert a new period to the database
@@ -122,9 +117,9 @@ class _PeriodScreenState extends State<PeriodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(193, 234, 233, 240),
+      backgroundColor: Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 229, 227, 236),
+        backgroundColor: Colors.blueAccent[600],
         centerTitle: true,
         title: const Text(
           "Periodo",

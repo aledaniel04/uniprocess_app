@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class MenuItem {
   final String title;
@@ -15,18 +15,48 @@ class MenuItem {
 
 const appMenuItems = <MenuItem>[
   MenuItem(
-      title: "primer SQLite",
-      subtitle: "ensayo de como usarlo",
-      link: "/SQLite",
-      icon: Icons.data_array_outlined),
+      title: "Inicio",
+      subtitle: "pantalla de inicio",
+      link: "/",
+      icon: Icons.start),
   MenuItem(
-      title: "segundo SQLite",
-      subtitle: "seguimos",
-      link: "/2SQLite",
-      icon: Icons.access_alarm_outlined),
+      title: "lista de Estudiantes",
+      subtitle: "todas las Listas",
+      link: "/studentsList",
+      icon: Icons.list_alt),
   MenuItem(
-      title: "tercer SQLite",
-      subtitle: "otra prueba",
-      link: "/3SQLite",
-      icon: Icons.edit)
-];*/
+      title: "lista de Asistencias",
+      subtitle: "todas las Asistencias",
+      link: "/attendance",
+      icon: Icons.assignment),
+  MenuItem(
+      title: "Lista de Notas",
+      subtitle: "todas las notas",
+      link: "/qualification",
+      icon: Icons.wrap_text),
+  MenuItem(
+      title: "Reporte",
+      subtitle: "todas los reportes",
+      link: "/reports",
+      icon: Icons.report),
+  MenuItem(
+      title: "plan de evaluacion",
+      subtitle: "todas los planes de evaluacion",
+      link: "/evaluationPlan",
+      icon: Icons.ev_station),
+  MenuItem(
+      title: "Horarios",
+      subtitle: "todas los horarios",
+      link: "/schedule",
+      icon: Icons.schedule),
+  MenuItem(
+      title: "Panel de usuario",
+      subtitle: "datos del usuario",
+      link: "/user",
+      icon: Icons.account_circle),
+  MenuItem(
+      title: "tema",
+      subtitle: "todo los temas",
+      link: "/theme",
+      icon: Icons.theater_comedy),
+];

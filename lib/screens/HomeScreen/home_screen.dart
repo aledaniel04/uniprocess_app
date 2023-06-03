@@ -4,6 +4,7 @@ import 'package:uniprocess_app/screens/HomeScreen/add_update_note_screen.dart';
 import 'package:uniprocess_app/screens/HomeScreen/db_helper_note.dart';
 import 'package:uniprocess_app/screens/HomeScreen/model_note.dart';
 import 'package:uniprocess_app/screens/screen.dart';
+import 'package:uniprocess_app/widgets/side_menu.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String name = "Home_Screen";
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: const SideMenu(),
       appBar: AppBar(
         title: const Text(
           "UNIPROCESS",
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               iconSize: 30.0,
               onPressed: () {},
-              icon: Icon(Icons.supervised_user_circle_sharp),
+              icon: Icon(Icons.account_circle),
             ),
           )
         ],
