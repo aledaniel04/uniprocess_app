@@ -17,7 +17,7 @@ class _CareerScreenState extends State<CareerScreen> {
   bool _isLoading = true;
   // This function is used to fetch all data from the database
   void _refreshData() async {
-    final data = await DBHelperCareer.getAllData();
+    final data = await DBHelperNewCareer.getsingleDataPeriod(widget.period);
     setState(() {
       _allData = data;
       _isLoading = false;
@@ -30,6 +30,7 @@ class _CareerScreenState extends State<CareerScreen> {
     _refreshData(); // Loading the diary when the app starts
   }
 
+  final TextEditingController _periodController = TextEditingController();
   final TextEditingController _careerController = TextEditingController();
 
   // This function will be triggered when the floating button is pressed
@@ -79,7 +80,7 @@ class _CareerScreenState extends State<CareerScreen> {
                         }
 
                         // Clear the text fields
-                        _careerController.text = '';
+                        _periodController.text = '';
 
                         // Close the bottom sheet
                         Navigator.of(context).pop();
@@ -99,19 +100,20 @@ class _CareerScreenState extends State<CareerScreen> {
 
 // Insert a new period to the database
   Future<void> _addData() async {
-    await DBHelperCareer.createData(_careerController.text);
+    await DBHelperNewCareer.createData(_careerController.text, widget.period);
     _refreshData();
   }
 
   // Update an existing period
   Future<void> _updateData(int id) async {
-    await DBHelperCareer.updateData(id, _careerController.text);
+    await DBHelperNewCareer.updateData(
+        id, _careerController.text, widget.period);
     _refreshData();
   }
 
   // Delete an item
   void _deleteItem(int id) async {
-    await DBHelperCareer.deleteData(id);
+    await DBHelperNewCareer.deleteData(id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.redAccent,
       content: Text('eliminaste un periodo'),
@@ -126,8 +128,8 @@ class _CareerScreenState extends State<CareerScreen> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
-        title: const Text(
-          "Carrera",
+        title: Text(
+          "Carrra ${widget.period}",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
