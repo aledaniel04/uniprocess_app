@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uniprocess_app/screens/menuOptionsScreen/menu_options_screen.dart';
 import 'package:uniprocess_app/screens/subjectScreen/db_helper_subject.dart';
 
 class SubjectScreen extends StatefulWidget {
@@ -180,7 +181,20 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 color: Colors.lime[200],
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return MenuOptionsScreen(
+                          period: _allData[index]["period"],
+                          career: _allData[index]["career"],
+                          subject: _allData[index]["subject"],
+                          section: _allData[index]["section"],
+                          semester: _allData[index]["semester"],
+                        );
+                      }),
+                    );
+                  },
                   title: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: Text(
