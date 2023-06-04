@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:uniprocess_app/screens/careerScreen/db_helper_caeer.dart';
-import 'package:uniprocess_app/screens/subjectScreen/subject_screen.dart';
+import 'package:uniprocess_app/screens/subjectScreen/db_helper_subject.dart';
 
-class CareerScreen extends StatefulWidget {
+class SubjectScreen extends StatefulWidget {
   final String period;
-  static const String name = "Period_Screen";
-  const CareerScreen({super.key, required this.period});
+  final String career;
+  //static const String name = "Period_Screen";
+  const SubjectScreen({super.key, required this.period, required this.career});
 
   @override
-  State<CareerScreen> createState() => _CareerScreenState();
+  State<SubjectScreen> createState() => _SubjectScreenState();
 }
 
-class _CareerScreenState extends State<CareerScreen> {
+class _SubjectScreenState extends State<SubjectScreen> {
   // All journals
   List<Map<String, dynamic>> _allData = [];
 
   bool _isLoading = true;
   // This function is used to fetch all data from the database
   void _refreshData() async {
-    final data = await DBHelperNewCareer.getsingleDataPeriod(widget.period);
+    final data =
+        await DBHelperSubject.getsingleDataCareer(widget.period, widget.career);
     setState(() {
       _allData = data;
       _isLoading = false;
@@ -33,7 +34,9 @@ class _CareerScreenState extends State<CareerScreen> {
 
   final TextEditingController _periodController = TextEditingController();
   final TextEditingController _careerController = TextEditingController();
-
+  final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _sectionController = TextEditingController();
+  final TextEditingController _semesterController = TextEditingController();
   // This function will be triggered when the floating button is pressed
   // It will also be triggered when you want to update an item
   void _showBottomSheet(int? id) async {
@@ -42,7 +45,9 @@ class _CareerScreenState extends State<CareerScreen> {
       // id != null -> update an existing period
       final existingData =
           _allData.firstWhere((element) => element['id'] == id);
-      _careerController.text = existingData['career'];
+      _subjectController.text = existingData['subject'];
+      _sectionController.text = existingData['section'];
+      _semesterController.text = existingData['semester'];
     }
 
     showModalBottomSheet(
@@ -62,8 +67,22 @@ class _CareerScreenState extends State<CareerScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextField(
-                    controller: _careerController,
-                    decoration: const InputDecoration(hintText: 'carrera'),
+                    controller: _subjectController,
+                    decoration: const InputDecoration(hintText: 'asignatura'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _sectionController,
+                    decoration: const InputDecoration(hintText: 'seccion'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _semesterController,
+                    decoration: const InputDecoration(hintText: 'semestre'),
                   ),
                   const SizedBox(
                     height: 10,
@@ -83,13 +102,17 @@ class _CareerScreenState extends State<CareerScreen> {
                         // Clear the text fields
                         _periodController.text = '';
                         _careerController.text = "";
+                        _subjectController.text = "";
+                        _sectionController.text = "";
+                        _semesterController.text = "";
 
                         // Close the bottom sheet
                         Navigator.of(context).pop();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(18),
-                        child: Text(id == null ? 'Nuevo carrera' : 'Actualizar',
+                        child: Text(
+                            id == null ? 'Nuevo asignatura' : 'Actualizar',
                             style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w500)),
                       ),
@@ -102,20 +125,30 @@ class _CareerScreenState extends State<CareerScreen> {
 
 // Insert a new period to the database
   Future<void> _addData() async {
-    await DBHelperNewCareer.createData(_careerController.text, widget.period);
+    await DBHelperSubject.createData(
+        widget.period,
+        widget.career,
+        _subjectController.text,
+        _sectionController.text,
+        _semesterController.text);
     _refreshData();
   }
 
   // Update an existing period
   Future<void> _updateData(int id) async {
-    await DBHelperNewCareer.updateData(
-        id, _careerController.text, widget.period);
+    await DBHelperSubject.updateData(
+        id,
+        widget.period,
+        widget.career,
+        _subjectController.text,
+        _sectionController.text,
+        _semesterController.text);
     _refreshData();
   }
 
   // Delete an item
   void _deleteItem(int id) async {
-    await DBHelperNewCareer.deleteData(id);
+    await DBHelperSubject.deleteData(id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.redAccent,
       content: Text('eliminaste un periodo'),
@@ -128,10 +161,12 @@ class _CareerScreenState extends State<CareerScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(193, 234, 233, 240),
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
         title: Text(
-          "${widget.period} - Carreras",
+          """${widget.period} - ${widget.career} 
+          Asignatura """,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -145,23 +180,32 @@ class _CareerScreenState extends State<CareerScreen> {
                 color: Colors.lime[200],
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return SubjectScreen(
-                          period: _allData[index]["period"],
-                          career: _allData[index]["career"],
-                        );
-                      }),
-                    );
-                  },
+                  onTap: () {},
                   title: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: Text(
-                        _allData[index]['career'],
+                        _allData[index]['subject'],
                         style: const TextStyle(fontSize: 20),
                       )),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Text(
+                          _allData[index]['section'],
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Text(
+                          _allData[index]['semester'],
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
