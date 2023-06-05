@@ -15,11 +15,11 @@ final appRouter = GoRouter(
       name: PeriodScreen.name,
       builder: (context, state) => const PeriodScreen(),
     ),
-    GoRoute(
+    /* GoRoute(
       path: "/studentsList",
       //name:
       builder: (context, state) => const StudentsList(),
-    ),
+    )*/
     GoRoute(
       path: "/attendance",
       //name: ,
