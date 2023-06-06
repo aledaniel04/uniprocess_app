@@ -20,16 +20,16 @@ final appRouter = GoRouter(
       //name:
       builder: (context, state) => const StudentsList(),
     )*/
-    GoRoute(
+    /*GoRoute(
       path: "/attendance",
       //name: ,
       builder: (context, state) => const AttendanceScreen(),
-    ),
-    GoRoute(
+    ),*/
+    /*GoRoute(
       path: "/qualification",
       //name:
       builder: (context, state) => const QualificationScreen(),
-    ),
+    ),*/
     GoRoute(
       path: "/reports",
       //name:

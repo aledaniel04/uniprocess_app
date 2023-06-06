@@ -25,7 +25,7 @@ class _SideMenuState extends State<SideMenu> {
         context.push(menuItem.link);
       },
       children: [
-        const Padding(
+        /*const Padding(
           padding: const EdgeInsets.fromLTRB(28, 20, 16, 10),
           child: Text(
             "Menu",
@@ -41,7 +41,7 @@ class _SideMenuState extends State<SideMenu> {
           child: Divider(
             color: Colors.black,
           ),
-        ),
+        ),*/
         const Padding(
           padding: EdgeInsets.fromLTRB(28, 10, 16, 10),
           child: Text(

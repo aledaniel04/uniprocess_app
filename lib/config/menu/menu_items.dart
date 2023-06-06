@@ -19,7 +19,7 @@ const appMenuItems = <MenuItem>[
       subtitle: "pantalla de inicio",
       link: "/",
       icon: Icons.start),
-  MenuItem(
+  /* MenuItem(
       title: "lista de Estudiantes",
       subtitle: "todas las Listas",
       link: "/studentsList",
@@ -33,7 +33,7 @@ const appMenuItems = <MenuItem>[
       title: "Lista de Notas",
       subtitle: "todas las notas",
       link: "/qualification",
-      icon: Icons.wrap_text),
+      icon: Icons.wrap_text),*/
   MenuItem(
       title: "Reporte",
       subtitle: "todas los reportes",

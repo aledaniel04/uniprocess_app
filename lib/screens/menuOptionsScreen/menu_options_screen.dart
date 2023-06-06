@@ -104,7 +104,13 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return AttendanceScreen();
+                      return AttendanceScreen(
+                        period: widget.period,
+                        career: widget.career,
+                        subject: widget.subject,
+                        section: widget.section,
+                        semester: widget.semester,
+                      );
                     }),
                   );
                 },
