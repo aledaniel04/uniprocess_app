@@ -162,87 +162,102 @@ class _SubjectScreenState extends State<SubjectScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(193, 234, 233, 240),
       appBar: AppBar(
-        toolbarHeight: 100,
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
         title: Text(
-          """${widget.period} - ${widget.career} 
-          Asignatura """,
+          "Asignatura",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: _allData.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.lime[200],
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return MenuOptionsScreen(
-                          period: _allData[index]["period"],
-                          career: _allData[index]["career"],
-                          subject: _allData[index]["subject"],
-                          section: _allData[index]["section"],
-                          semester: _allData[index]["semester"],
-                        );
-                      }),
-                    );
-                  },
-                  title: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        _allData[index]['subject'],
-                        style: const TextStyle(fontSize: 20),
-                      )),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          _allData[index]['section'],
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          _allData[index]['semester'],
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.blueAccent,
-                        ),
-                        onPressed: () =>
-                            _showBottomSheet(_allData[index]['id']),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                        ),
-                        onPressed: () => _deleteItem(_allData[index]['id']),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${widget.period} > ${widget.career}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
+          ),
+          Expanded(
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: _allData.length,
+                    itemBuilder: (context, index) => Card(
+                      color: Colors.lime[200],
+                      margin: const EdgeInsets.all(15),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return MenuOptionsScreen(
+                                period: _allData[index]["period"],
+                                career: _allData[index]["career"],
+                                subject: _allData[index]["subject"],
+                                section: _allData[index]["section"],
+                                semester: _allData[index]["semester"],
+                              );
+                            }),
+                          );
+                        },
+                        title: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              _allData[index]['subject'],
+                              style: const TextStyle(fontSize: 20),
+                            )),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                _allData[index]['section'],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                _allData[index]['semester'],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            )
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.blueAccent,
+                              ),
+                              onPressed: () =>
+                                  _showBottomSheet(_allData[index]['id']),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.redAccent,
+                              ),
+                              onPressed: () =>
+                                  _deleteItem(_allData[index]['id']),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => _showBottomSheet(null),

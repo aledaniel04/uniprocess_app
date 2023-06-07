@@ -49,7 +49,7 @@ class _SideMenuState extends State<SideMenu> {
             style: TextStyle(fontSize: 20),
           ),
         ),
-        ...appMenuItems.sublist(4).map(
+        ...appMenuItems.sublist(0).map(
               (item) => NavigationDrawerDestination(
                   icon: Icon(item.icon), label: Text(item.title)),
             ),

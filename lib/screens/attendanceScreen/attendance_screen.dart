@@ -43,21 +43,24 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       widget.semester,
       "2023-06-05",
     );
+
     print(data);
-    var datos = data.map((e) {
-      var item = data2.indexWhere((element) => element["idstudent"] == e["id"]);
-      print("item: $item");
+    var newData = data.map((e) {
+      var itemIndex =
+          data2.indexWhere((element) => element["idstudent"] == e["id"]);
+      // var assistance = itemIndex != -1 ? data2[itemIndex]["assistance"] : 0;
+      print("item: $itemIndex");
       return {
         "idstudent": e["id"],
         "name": e["name"],
         "lastname": e["lastname"],
         "cedula": e["cedula"],
-        "assistance": 0 //item != -1 ? item["assistance"] :
+        "assistance": itemIndex != -1 ? data2[itemIndex]["assistance"] : 0,
       };
-    });
-    print(datos);
+    }).toList();
+    print(newData);
     setState(() {
-      _allData = data;
+      _allData = newData;
       _isLoading = false;
     });
   }
@@ -200,68 +203,80 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       backgroundColor: Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
         backgroundColor: Colors.blueAccent[600],
-        toolbarHeight: 150,
         centerTitle: true,
         title: Text(
-          """${widget.period} - ${widget.career} 
-          ${widget.subject} -${widget.section} 
-          ${widget.semester} 
-            lista de asistencias
-          """,
+          "lista de asistencias",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: _allData.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.lime[200],
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                  onTap: () {},
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _allData[index]['name'],
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Text(
-                          _allData[index]["lastname"],
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ),
-                  subtitle: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    child: Text(
-                      _allData[index]["cedula"],
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  trailing: Checkbox(
-                    value: _allData[index]["assistance"] == 0 ? false : true,
-                    onChanged: (bool? value) {
-                      var nuevo = _allData;
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      nuevo[index]["assistance"] = value! ? 1 : 0;
-                      setState(() {
-                        _isLoading = false;
-                        _allData = nuevo;
-                      });
-                    },
-                  ),
-                ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
+          ),
+          Expanded(
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: _allData.length,
+                    itemBuilder: (context, index) => Card(
+                      color: Colors.lime[200],
+                      margin: const EdgeInsets.all(15),
+                      child: ListTile(
+                        onTap: () {},
+                        title: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _allData[index]['name'],
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                _allData[index]["lastname"],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            )
+                          ],
+                        ),
+                        subtitle: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            _allData[index]["cedula"],
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        trailing: Checkbox(
+                          value:
+                              _allData[index]["assistance"] == 0 ? false : true,
+                          onChanged: (bool? value) {
+                            var nuevo = _allData;
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            nuevo[index]["assistance"] = value! ? 1 : 0;
+                            setState(() {
+                              _isLoading = false;
+                              _allData = nuevo;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

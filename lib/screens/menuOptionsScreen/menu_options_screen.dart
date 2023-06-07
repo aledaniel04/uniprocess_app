@@ -50,17 +50,23 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
-        toolbarHeight: 150,
         title: Text(
-          """    ${widget.period} - ${widget.career} 
-          ${widget.subject} -${widget.section} 
-          ${widget.semester}  
-    Menu de opciones""",
+          "Menu de opciones",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
           Card(
             color: Colors.lime[200],
             margin: const EdgeInsets.all(15),

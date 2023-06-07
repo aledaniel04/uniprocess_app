@@ -131,60 +131,77 @@ class _CareerScreenState extends State<CareerScreen> {
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
         title: Text(
-          "${widget.period} - Carreras",
+          "Carreras",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: _allData.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.lime[200],
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return SubjectScreen(
-                          period: _allData[index]["period"],
-                          career: _allData[index]["career"],
-                        );
-                      }),
-                    );
-                  },
-                  title: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        _allData[index]['career'],
-                        style: const TextStyle(fontSize: 20),
-                      )),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.blueAccent,
-                        ),
-                        onPressed: () =>
-                            _showBottomSheet(_allData[index]['id']),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                        ),
-                        onPressed: () => _deleteItem(_allData[index]['id']),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.period,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
+          ),
+          Expanded(
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: _allData.length,
+                    itemBuilder: (context, index) => Card(
+                      color: Colors.lime[200],
+                      margin: const EdgeInsets.all(15),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return SubjectScreen(
+                                period: _allData[index]["period"],
+                                career: _allData[index]["career"],
+                              );
+                            }),
+                          );
+                        },
+                        title: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              _allData[index]['career'],
+                              style: const TextStyle(fontSize: 20),
+                            )),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.blueAccent,
+                              ),
+                              onPressed: () =>
+                                  _showBottomSheet(_allData[index]['id']),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.redAccent,
+                              ),
+                              onPressed: () =>
+                                  _deleteItem(_allData[index]['id']),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => _showBottomSheet(null),

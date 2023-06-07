@@ -176,75 +176,87 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent[600],
-        toolbarHeight: 150,
+        backgroundColor: Color.fromARGB(255, 192, 199, 212),
         centerTitle: true,
         title: Text(
-          """${widget.period} - ${widget.career} 
-          ${widget.subject} -${widget.section} 
-          ${widget.semester} 
-            lista de Estudiantes
-          """,
+          "lista de Estudiantes",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: _allData.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.lime[200],
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                  onTap: () {},
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _allData[index]['name'],
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Text(
-                          _allData[index]["lastname"],
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ),
-                  subtitle: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    child: Text(
-                      _allData[index]["cedula"],
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.blueAccent,
-                        ),
-                        onPressed: () =>
-                            _showBottomSheet(_allData[index]['id']),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                        ),
-                        onPressed: () => _deleteItem(_allData[index]['id']),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
+          ),
+          Expanded(
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: _allData.length,
+                    itemBuilder: (context, index) => Card(
+                      color: Colors.lime[200],
+                      margin: const EdgeInsets.all(15),
+                      child: ListTile(
+                        onTap: () {},
+                        title: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _allData[index]['name'],
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                _allData[index]["lastname"],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            )
+                          ],
+                        ),
+                        subtitle: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            _allData[index]["cedula"],
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.blueAccent,
+                              ),
+                              onPressed: () =>
+                                  _showBottomSheet(_allData[index]['id']),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.redAccent,
+                              ),
+                              onPressed: () =>
+                                  _deleteItem(_allData[index]['id']),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => _showBottomSheet(null),
