@@ -13,6 +13,7 @@ class PeriodScreen extends StatefulWidget {
 class _PeriodScreenState extends State<PeriodScreen> {
   // All journals
   List<Map<String, dynamic>> _allData = [];
+  final _fromkey = GlobalKey<FormState>();
 
   bool _isLoading = true;
   // This function is used to fetch all data from the database
@@ -34,7 +35,10 @@ class _PeriodScreenState extends State<PeriodScreen> {
 
   // This function will be triggered when the floating button is pressed
   // It will also be triggered when you want to update an item
-  void _showBottomSheet(int? id) async {
+  void _showDialogPeriod(int? id) async {
+    bool isNewPeriod = id == null;
+    String dialogTitle = isNewPeriod ? 'Nuevo Periodo' : 'Actualizar Periodo';
+
     if (id != null) {
       // id == null -> create new period
       // id != null -> update an existing period
@@ -46,19 +50,32 @@ class _PeriodScreenState extends State<PeriodScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Center(
+        title: Center(
             child: Text(
-          'Periodo',
+          dialogTitle,
           style: TextStyle(fontWeight: FontWeight.bold),
         )),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _periodController,
-              decoration: const InputDecoration(hintText: 'Periodo'),
-            ),
-          ],
+        content: Form(
+          key: _fromkey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _periodController,
+                decoration: InputDecoration(
+                  hintText: 'Periodo',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0)),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Este campo es requerido';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -71,20 +88,48 @@ class _PeriodScreenState extends State<PeriodScreen> {
           ElevatedButton(
             child: Text(id == null ? 'Nuevo Periodo' : 'Actualizar'),
             onPressed: () async {
-              // Save new period
-              if (id == null) {
-                await _addData();
+              if (_fromkey.currentState!.validate()) {
+                // Save new period
+                if (id == null) {
+                  await _addData();
+                }
+
+                if (id != null) {
+                  await _updateData(id);
+                }
+
+                // Clear the text fields
+                _periodController.text = '';
+
+                // Close the dialog
+                Navigator.of(context).pop();
               }
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-              if (id != null) {
-                await _updateData(id);
-              }
-
-              // Clear the text fields
-              _periodController.text = '';
-
-              // Close the dialog
+  void _showDeleteConfirmationDialog(int id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar eliminación'),
+        content:
+            const Text('¿Estás seguro de que quieres eliminar este periodo?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () {
               Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Eliminar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteItem(id);
             },
           ),
         ],
@@ -161,14 +206,15 @@ class _PeriodScreenState extends State<PeriodScreen> {
                           color: Colors.blueAccent,
                         ),
                         onPressed: () =>
-                            _showBottomSheet(_allData[index]['id']),
+                            _showDialogPeriod(_allData[index]['id']),
                       ),
                       IconButton(
                         icon: const Icon(
                           Icons.delete,
                           color: Colors.redAccent,
                         ),
-                        onPressed: () => _deleteItem(_allData[index]['id']),
+                        onPressed: () => _showDeleteConfirmationDialog(
+                            _allData[index]['id']),
                       ),
                     ],
                   ),
@@ -177,7 +223,7 @@ class _PeriodScreenState extends State<PeriodScreen> {
             ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showBottomSheet(null),
+        onPressed: () => _showDialogPeriod(null),
       ),
     );
   }

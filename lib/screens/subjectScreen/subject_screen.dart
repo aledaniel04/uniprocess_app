@@ -15,6 +15,7 @@ class SubjectScreen extends StatefulWidget {
 class _SubjectScreenState extends State<SubjectScreen> {
   // All journals
   List<Map<String, dynamic>> _allData = [];
+  final _fromkey = GlobalKey<FormState>();
 
   bool _isLoading = true;
   // This function is used to fetch all data from the database
@@ -33,14 +34,17 @@ class _SubjectScreenState extends State<SubjectScreen> {
     _refreshData(); // Loading the diary when the app starts
   }
 
-  final TextEditingController _periodController = TextEditingController();
-  final TextEditingController _careerController = TextEditingController();
+  //final TextEditingController _periodController = TextEditingController();
+  //final TextEditingController _careerController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _semesterController = TextEditingController();
   // This function will be triggered when the floating button is pressed
   // It will also be triggered when you want to update an item
-  void _showBottomSheet(int? id) async {
+  void _showDialogSubject(int? id) async {
+    bool isNewCareer = id == null;
+    String dialogTitle = isNewCareer ? 'Nueva Carrera' : 'Actualizar Carrera';
+
     if (id != null) {
       // id == null -> create new period
       // id != null -> update an existing period
@@ -51,77 +55,132 @@ class _SubjectScreenState extends State<SubjectScreen> {
       _semesterController.text = existingData['semester'];
     }
 
-    showModalBottomSheet(
+    showDialog(
         context: context,
-        elevation: 5,
-        isScrollControlled: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 30,
-                left: 15,
-                right: 15,
-                // this will prevent the soft keyboard from covering the text fields
-                bottom: MediaQuery.of(context).viewInsets.bottom + 50,
+        builder: (_) => AlertDialog(
+              title: Center(
+                child: Text(
+                  dialogTitle,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _subjectController,
-                    decoration: const InputDecoration(hintText: 'asignatura'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _sectionController,
-                    decoration: const InputDecoration(hintText: 'seccion'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _semesterController,
-                    decoration: const InputDecoration(hintText: 'semestre'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // Save new period
-                        if (id == null) {
-                          await _addData();
+              content: Form(
+                key: _fromkey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextFormField(
+                      controller: _subjectController,
+                      decoration: InputDecoration(
+                          hintText: 'asignatura',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40.0))),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Este campo es requerido';
                         }
-
-                        if (id != null) {
-                          await _updateData(id);
-                        }
-
-                        // Clear the text fields
-                        _periodController.text = '';
-                        _careerController.text = "";
-                        _subjectController.text = "";
-                        _sectionController.text = "";
-                        _semesterController.text = "";
-
-                        // Close the bottom sheet
-                        Navigator.of(context).pop();
+                        return null;
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(18),
-                        child: Text(
-                            id == null ? 'Nuevo asignatura' : 'Actualizar',
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ),
                     ),
-                  )
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _sectionController,
+                      decoration: InputDecoration(
+                          hintText: 'seccion',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40.0))),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Este campo es requerido';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _semesterController,
+                      decoration: InputDecoration(
+                          hintText: 'semestre',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40.0))),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Este campo es requerido';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
               ),
+              actions: [
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _subjectController.text = "";
+                    _sectionController.text = "";
+                    _semesterController.text = "";
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_fromkey.currentState!.validate()) {
+                      // Save new period
+                      if (id == null) {
+                        await _addData();
+                      }
+
+                      if (id != null) {
+                        await _updateData(id);
+                      }
+
+                      _subjectController.text = "";
+                      _sectionController.text = "";
+                      _semesterController.text = "";
+
+                      // Close the bottom sheet
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text(id == null ? 'Nueva asignatura' : 'Actualizar'),
+                ),
+              ],
             ));
+  }
+
+  void _showDeleteConfirmationDialog(int id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar eliminación'),
+        content: const Text(
+            '¿Estás seguro de que quieres eliminar esta asinagtura?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Eliminar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteItem(id);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
 // Insert a new period to the database
@@ -240,15 +299,15 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                 color: Colors.blueAccent,
                               ),
                               onPressed: () =>
-                                  _showBottomSheet(_allData[index]['id']),
+                                  _showDialogSubject(_allData[index]['id']),
                             ),
                             IconButton(
                               icon: const Icon(
                                 Icons.delete,
                                 color: Colors.redAccent,
                               ),
-                              onPressed: () =>
-                                  _deleteItem(_allData[index]['id']),
+                              onPressed: () => _showDeleteConfirmationDialog(
+                                  _allData[index]['id']),
                             ),
                           ],
                         ),
@@ -260,7 +319,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showBottomSheet(null),
+        onPressed: () => _showDialogSubject(null),
       ),
     );
   }

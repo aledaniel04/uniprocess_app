@@ -98,7 +98,9 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                 trailing: Padding(
                   padding:
                       const EdgeInsetsDirectional.symmetric(horizontal: 10),
-                  child: const Icon(Icons.arrow_circle_down),
+                  child: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                  ),
                 )),
           ),
           SizedBox(height: 20),
@@ -133,7 +135,9 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                 trailing: Padding(
                   padding:
                       const EdgeInsetsDirectional.symmetric(horizontal: 10),
-                  child: const Icon(Icons.arrow_circle_down),
+                  child: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                  ),
                 )),
           ),
           SizedBox(height: 20),
@@ -162,7 +166,9 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                 trailing: Padding(
                   padding:
                       const EdgeInsetsDirectional.symmetric(horizontal: 10),
-                  child: const Icon(Icons.arrow_circle_down),
+                  child: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                  ),
                 )),
           )
         ],

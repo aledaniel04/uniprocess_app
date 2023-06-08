@@ -14,6 +14,7 @@ class CareerScreen extends StatefulWidget {
 class _CareerScreenState extends State<CareerScreen> {
   // All journals
   List<Map<String, dynamic>> _allData = [];
+  final _fromkey = GlobalKey<FormState>();
 
   bool _isLoading = true;
   // This function is used to fetch all data from the database
@@ -31,73 +32,108 @@ class _CareerScreenState extends State<CareerScreen> {
     _refreshData(); // Loading the diary when the app starts
   }
 
-  final TextEditingController _periodController = TextEditingController();
+  //final TextEditingController _periodController = TextEditingController();
   final TextEditingController _careerController = TextEditingController();
 
   // This function will be triggered when the floating button is pressed
   // It will also be triggered when you want to update an item
-  void _showBottomSheet(int? id) async {
+  void _showDialogCareer(int? id) async {
+    bool isNewCareer = id == null;
+    String dialogTitle = isNewCareer ? 'Nueva Carrera' : 'Actualizar Carrera';
+
     if (id != null) {
-      // id == null -> create new period
-      // id != null -> update an existing period
       final existingData =
           _allData.firstWhere((element) => element['id'] == id);
       _careerController.text = existingData['career'];
     }
 
-    showModalBottomSheet(
-        context: context,
-        elevation: 5,
-        isScrollControlled: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 30,
-                left: 15,
-                right: 15,
-                // this will prevent the soft keyboard from covering the text fields
-                bottom: MediaQuery.of(context).viewInsets.bottom + 50,
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Center(
+          child: Text(
+            dialogTitle,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        content: Form(
+          key: _fromkey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _careerController,
+                decoration: InputDecoration(
+                    hintText: 'Carrera',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40.0))),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Este campo es requerido';
+                  }
+                  return null;
+                },
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _careerController,
-                    decoration: const InputDecoration(hintText: 'carrera'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // Save new period
-                        if (id == null) {
-                          await _addData();
-                        }
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _careerController.text = '';
+            },
+          ),
+          ElevatedButton(
+            child: Text(id == null ? 'Nueva Carrera' : 'Actualizar'),
+            onPressed: () async {
+              if (_fromkey.currentState!.validate()) {
+                // Save new career
+                if (id == null) {
+                  await _addData();
+                }
 
-                        if (id != null) {
-                          await _updateData(id);
-                        }
+                // Update existing career
+                if (id != null) {
+                  await _updateData(id);
+                }
 
-                        // Clear the text fields
-                        _periodController.text = '';
-                        _careerController.text = "";
+                _careerController.text = '';
 
-                        // Close the bottom sheet
-                        Navigator.of(context).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(18),
-                        child: Text(id == null ? 'Nuevo carrera' : 'Actualizar',
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ));
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(int id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar eliminación'),
+        content:
+            const Text('¿Estás seguro de que quieres eliminar esta carrera?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Eliminar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteItem(id);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
 // Insert a new period to the database
@@ -184,15 +220,15 @@ class _CareerScreenState extends State<CareerScreen> {
                                 color: Colors.blueAccent,
                               ),
                               onPressed: () =>
-                                  _showBottomSheet(_allData[index]['id']),
+                                  _showDialogCareer(_allData[index]['id']),
                             ),
                             IconButton(
                               icon: const Icon(
                                 Icons.delete,
                                 color: Colors.redAccent,
                               ),
-                              onPressed: () =>
-                                  _deleteItem(_allData[index]['id']),
+                              onPressed: () => _showDeleteConfirmationDialog(
+                                  _allData[index]['id']),
                             ),
                           ],
                         ),
@@ -204,7 +240,7 @@ class _CareerScreenState extends State<CareerScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showBottomSheet(null),
+        onPressed: () => _showDialogCareer(null),
       ),
     );
   }
