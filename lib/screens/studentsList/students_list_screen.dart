@@ -23,6 +23,7 @@ class StudentsListScreen extends StatefulWidget {
 class _StudentsListScreenState extends State<StudentsListScreen> {
   // All journals
   List<Map<String, dynamic>> _allData = [];
+  final _fromkey = GlobalKey<FormState>();
 
   bool _isLoading = true;
   // This function is used to fetch all data from the database
@@ -51,7 +52,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   // This function will be triggered when the floating button is pressed
   // It will also be triggered when you want to update an item
-  void _showBottomSheet(int? id) async {
+  void _showDialogList(int? id) async {
+    bool isNewCareer = id == null;
+    String dialogTitle =
+        isNewCareer ? 'Nuevo Estudiante' : 'Actualizar Estudiante';
     if (id != null) {
       // id == null -> create new period
       // id != null -> update an existing period
@@ -65,36 +69,66 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Center(
+        title: Center(
             child: Text(
-          'estudiante',
+          dialogTitle,
           style: TextStyle(fontWeight: FontWeight.bold),
         )),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(hintText: 'Nombre'),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _lastnameController,
-              decoration: const InputDecoration(hintText: 'Apellido'),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _cedulaController,
-              decoration: const InputDecoration(hintText: 'Cedula'),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-          ],
+        content: Form(
+          key: _fromkey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                    hintText: 'Nombre',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40.0))),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Este campo es requerido';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: _lastnameController,
+                decoration: InputDecoration(
+                    hintText: 'Apellido',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40.0))),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Este campo es requerido';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: _cedulaController,
+                decoration: InputDecoration(
+                    hintText: 'Cedula',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40.0))),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Este campo es requerido';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -109,22 +143,49 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
           ElevatedButton(
             child: Text(id == null ? 'Agregar Estudiante' : 'Actualizar'),
             onPressed: () async {
-              // Save new period
-              if (id == null) {
-                await _addData();
+              if (_fromkey.currentState!.validate()) {
+                if (id == null) {
+                  await _addData();
+                }
+
+                if (id != null) {
+                  await _updateData(id);
+                }
+
+                // Clear the text fields
+                _nameController.text = '';
+                _lastnameController.text = "";
+                _cedulaController.text = "";
+
+                // Close the dialog
+                Navigator.of(context).pop();
               }
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-              if (id != null) {
-                await _updateData(id);
-              }
-
-              // Clear the text fields
-              _nameController.text = '';
-              _lastnameController.text = "";
-              _cedulaController.text = "";
-
-              // Close the dialog
+  void _showDeleteConfirmationDialog(int id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar eliminación'),
+        content: const Text(
+            '¿Estás seguro de que quieres eliminar este estudiante?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () {
               Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Eliminar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteItem(id);
             },
           ),
         ],
@@ -210,15 +271,21 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         title: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              _allData[index]['name'],
-                              style: const TextStyle(fontSize: 20),
+                            Flexible(
+                              child: Text(
+                                _allData[index]['name'],
+                                style: const TextStyle(fontSize: 20),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Text(
-                                _allData[index]["lastname"],
-                                style: const TextStyle(fontSize: 20),
+                              child: Flexible(
+                                child: Text(
+                                  _allData[index]["lastname"],
+                                  style: const TextStyle(fontSize: 20),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             )
                           ],
@@ -239,15 +306,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                 color: Colors.blueAccent,
                               ),
                               onPressed: () =>
-                                  _showBottomSheet(_allData[index]['id']),
+                                  _showDialogList(_allData[index]['id']),
                             ),
                             IconButton(
                               icon: const Icon(
                                 Icons.delete,
                                 color: Colors.redAccent,
                               ),
-                              onPressed: () =>
-                                  _deleteItem(_allData[index]['id']),
+                              onPressed: () => _showDeleteConfirmationDialog(
+                                  _allData[index]['id']),
                             ),
                           ],
                         ),
@@ -259,7 +326,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showBottomSheet(null),
+        onPressed: () => _showDialogList(null),
       ),
     );
   }
