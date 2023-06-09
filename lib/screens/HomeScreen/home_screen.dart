@@ -248,12 +248,47 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 10,
           ),
           Center(
-              child: FilledButton.icon(
+              child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: FilledButton.icon(
+                    onPressed: () {
+                      context.pushNamed(PeriodScreen.name);
+                    },
+                    icon: const Icon(Icons.app_registration_outlined),
+                    label: const Text("Lista")),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              FilledButton.icon(
                   onPressed: () {
-                    context.pushNamed(PeriodScreen.name);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const ReportScreen();
+                      }),
+                    );
                   },
-                  icon: const Icon(Icons.app_registration_outlined),
-                  label: const Text("crea una lista"))),
+                  icon: const Icon(Icons.report),
+                  label: const Text("Reporte")),
+              SizedBox(
+                width: 10,
+              ),
+              FilledButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const ScheduleScreen();
+                      }),
+                    );
+                  },
+                  icon: const Icon(Icons.schedule),
+                  label: const Text("Horario")),
+            ],
+          )),
           const SizedBox(
             height: 20.0,
           ),
