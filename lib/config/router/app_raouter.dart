@@ -48,12 +48,12 @@ final appRouter = GoRouter(
     GoRoute(
       path: "/user",
       //name:
-      builder: (context, state) => const UserScreen(),
+      builder: (context, state) => const NewHorarioScreen(),
     ),
-    GoRoute(
+    /*GoRoute(
       path: "/theme",
       //name:
-      builder: (context, state) => const ThemeScreen(),
-    ),
+      builder: (context, state) => const HorarioScreen(),
+    ),*/
   ],
 );
