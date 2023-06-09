@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uniprocess_app/screens/attendanceScreen/attendance_screen.dart';
+import 'package:uniprocess_app/screens/evaluationPlanScreen/evaluation_plan_screen.dart';
 import 'package:uniprocess_app/screens/menuOptionsScreen/db_helper_menu_options.dart';
 import 'package:uniprocess_app/screens/qualificationScreen/qualification_screen.dart';
 import 'package:uniprocess_app/screens/studentsList/students_list_screen.dart';
@@ -176,7 +177,44 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                     Icons.arrow_forward_ios_outlined,
                   ),
                 )),
-          )
+          ),
+          SizedBox(height: 20),
+          Card(
+            color: Colors.lime[200],
+            margin: const EdgeInsets.all(15),
+            child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return EvaluationPlanScreen(
+                        period: widget.period,
+                        career: widget.career,
+                        subject: widget.subject,
+                        section: widget.section,
+                        semester: widget.semester,
+                      );
+                    }),
+                  );
+                },
+                title: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      widget.subject,
+                      style: const TextStyle(fontSize: 20),
+                    )),
+                subtitle: const Text(
+                  "Plan de evaluacaion",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                trailing: Padding(
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 10),
+                  child: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                  ),
+                )),
+          ),
         ],
       ),
     );
