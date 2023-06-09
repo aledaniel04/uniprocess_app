@@ -337,13 +337,11 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
                           trailing: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              /*Text(
-                                _dateFormatter.format(
-                                  DateTime.parse(_allData[index]['date']),
-                                ),
+                              Text(
+                                (_allData[index]['date']),
                                 style: const TextStyle(fontSize: 10),
                                 overflow: TextOverflow.ellipsis,
-                              ),*/
+                              ),
                               SizedBox(
                                 height: 5,
                               ),

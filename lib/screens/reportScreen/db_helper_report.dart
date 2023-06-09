@@ -1,22 +1,28 @@
-/*import 'dart:io';
+import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqlite_cinco/models/note_model.dart';
+import 'package:uniprocess_app/screens/reportScreen/report_model.dart';
 
-class DatabaseHelper {
-  static final DatabaseHelper instance = DatabaseHelper._instance();
+class DBHelperReport {
+  static final DBHelperReport instance = DBHelperReport._instance();
 
   static Database? _db;
 
-  DatabaseHelper._instance();
+  DBHelperReport._instance();
 
-  String noteTable = "note_table";
+  String reportTable = "report_table";
   String colId = "id";
-  String colTitle = "title";
+  String colWeek = "week";
   String colDate = "date";
-  String colPriority = "priority";
-  String colStatus = "status";
+  String colSede = "sede";
+  String colDocente = "docente";
+  String colCarrera = "carrera";
+  String colEstudiantes = "estudiantes";
+  String colEstudiantesPresent = "estudiantespresent";
+  String colUnidad = "unidad";
+  String colEvaluacion = "evaluacion";
+  String colObservaciones = "observaciones";
 
   Future<Database?> get db async {
     _db ??= await _initDb();
@@ -25,52 +31,64 @@ class DatabaseHelper {
 
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}todo_list.db";
-    final todoListDB =
-        await openDatabase(path, version: 1, onCreate: _createDb);
-    return todoListDB;
+    String path = "${dir.path}report_list.db";
+    final reportListDB =
+        await openDatabase(path, version: 15, onCreate: _createDb);
+    return reportListDB;
   }
 
   void _createDb(Database db, int version) async {
-    await db.execute(
-        "CREATE TABLE $noteTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT, $colPriority TEXT, $colStatus INTEGER)");
+    await db.execute("""CREATE TABLE $reportTable(
+          $colId INTEGER PRIMARY KEY AUTOINCREMENT, 
+          $colWeek TEXT, 
+          $colDate TEXT, 
+          $colSede TEXT, 
+          $colDocente TEXT, 
+          $colCarrera TEXT,
+          $colEstudiantes TEXT,
+          $colEstudiantesPresent TEXT,
+          $colUnidad,
+          $colEvaluacion TEXT,
+          $colObservaciones TEXT
+          )""");
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
     Database? db = await this.db;
-    final List<Map<String, dynamic>> result = await db!.query(noteTable);
+    final List<Map<String, dynamic>> result = await db!.query(reportTable);
     return result;
   }
 
-  Future<List<Note>> getNoteList() async {
-    final List<Map<String, dynamic>> noteMapList = await getNoteMapList();
+  Future<List<Report>> getNoteList() async {
+    final List<Map<String, dynamic>> reportMapList = await getNoteMapList();
 
-    final List<Note> noteList = [];
+    final List<Report> reportList = [];
 
-    for (var noteMap in noteMapList) {
-      noteList.add(Note.fromMap(noteMap));
+    for (var reportMap in reportMapList) {
+      reportList.add(Report.fromMap(reportMap));
     }
-    noteList.sort((noteA, noteB) => noteA.date!.compareTo(noteB.date!));
-    return noteList;
+    reportList
+        .sort((reportA, reportB) => reportA.date!.compareTo(reportB.date!));
+    return reportList;
   }
 
-  Future<int> insertNote(Note note) async {
+  Future<int> insertReport(Report report) async {
     Database? db = await this.db;
-    final int result = await db!.insert(noteTable, note.toMap());
+    final int result = await db!.insert(reportTable, report.toMap());
     return result;
   }
 
-  Future<int> updateNote(Note note) async {
+  Future<int> updateReport(Report report) async {
     Database? db = await this.db;
-    final int result = await db!.update(noteTable, note.toMap(),
-        where: "$colId = ?", whereArgs: [note.id]);
+    final int result = await db!.update(reportTable, report.toMap(),
+        where: "$colId = ?", whereArgs: [report.id]);
     return result;
   }
 
-  Future<int> deleteNote(int id) async {
+  Future<int> deleteReport(int id) async {
     Database? db = await this.db;
     final int result =
-        await db!.delete(noteTable, where: "$colId = ?", whereArgs: [id]);
+        await db!.delete(reportTable, where: "$colId = ?", whereArgs: [id]);
     return result;
   }
-}*/
+}

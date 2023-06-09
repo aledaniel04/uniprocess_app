@@ -1,13 +1,43 @@
-/*class Report {
+class Report {
   int? id;
-  String? title;
+  String? week;
   DateTime? date;
-  String? priority;
-  int? status;
+  String? sede;
+  String? docente;
+  String? carrera;
+  //String? asignatura;
+  String? estudiantes;
+  String? estudiantespresent;
+  String? unidad;
+  String? evaluacion;
+  String? observaciones;
 
-  Report({this.title, this.date, this.priority, this.status});
+  Report(
+      {this.week,
+      this.date,
+      this.sede,
+      this.docente,
+      this.carrera,
+      //this.asignatura,
+      this.estudiantes,
+      this.estudiantespresent,
+      this.unidad,
+      this.evaluacion,
+      this.observaciones});
 
-  Report.withId({this.id, this.title, this.date, this.priority, this.status});
+  Report.withId(
+      {this.id,
+      this.week,
+      this.date,
+      this.sede,
+      this.docente,
+      this.carrera,
+      //this.asignatura,
+      this.estudiantes,
+      this.estudiantespresent,
+      this.unidad,
+      this.evaluacion,
+      this.observaciones});
 
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{};
@@ -16,20 +46,34 @@
       map["id"] = id;
     }
 
-    map["title"] = title;
+    map["week"] = week;
     map["date"] = date!.toIso8601String();
-    map["priority"] = priority;
-    map["status"] = status;
+    map["sede"] = sede;
+    map["docente"] = docente;
+    map["carrera"] = carrera;
+    //map["asignatura"] = asignatura;
+    map["estudiantes"] = estudiantes;
+    map["estudiantespresent"] = estudiantespresent;
+    map["unidad"] = unidad;
+    map["evaluacion"] = evaluacion;
+    map["observaciones"] = observaciones;
     return map;
   }
 
   factory Report.fromMap(Map<String, dynamic> map) {
     return Report.withId(
       id: map["id"],
-      title: map["title"],
+      week: map["week"],
       date: DateTime.parse(map["date"]),
-      priority: map["priority"],
-      status: map["status"],
+      sede: map["sede"],
+      docente: map["docente"],
+      carrera: map["carrera"],
+      //asignatura: map["asignatura"],
+      estudiantes: map["estudiantes"],
+      estudiantespresent: map["estudiantespresent"],
+      unidad: map["unidad"],
+      evaluacion: map["evaluacion"],
+      observaciones: map["observaciones"],
     );
   }
-}*/
+}
