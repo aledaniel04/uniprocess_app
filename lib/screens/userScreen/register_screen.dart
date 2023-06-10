@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class UserScreen extends StatefulWidget {
-  const UserScreen({Key? key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key});
 
   @override
-  State<UserScreen> createState() => _UserScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _UserScreenState extends State<UserScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   String? selectedOption;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -27,8 +27,8 @@ class _UserScreenState extends State<UserScreen> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Aquí puedes actualizar los datos del usuario o realizar alguna otra acción
-      print('Datos actualizados:');
+      // Aquí puedes guardar los datos o realizar alguna acción
+      print('Datos guardados:');
       print('Opción seleccionada: $selectedOption');
       print('Nombre: ${_nameController.text}');
       print('Apellidos: ${_lastNameController.text}');
@@ -40,24 +40,21 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Panel de Usuario"),
-      ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 40),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                  height: 80,
-                  child: Icon(
-                    Icons.person,
-                    size: 200,
+                  height: 250,
+                  child: Image(
+                    image: AssetImage("assets/imagen/img1.png"),
+                    fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(height: 110),
+                SizedBox(height: 10),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -168,13 +165,14 @@ class _UserScreenState extends State<UserScreen> {
                         children: [
                           ElevatedButton(
                             onPressed: _submitForm,
-                            child: Text('Actualizar'),
+                            child: Text('Guardar datos'),
+                            style: ButtonStyle(),
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              // Acción al hacer clic en "Cancelar"
+                              // Acción al hacer clic en "Siguiente"
                             },
-                            child: Text('Cancelar'),
+                            child: Text('Siguiente'),
                           ),
                         ],
                       ),

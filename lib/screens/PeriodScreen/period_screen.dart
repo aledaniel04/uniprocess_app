@@ -162,9 +162,8 @@ class _PeriodScreenState extends State<PeriodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent[600],
+        backgroundColor: Color.fromARGB(255, 227, 229, 234),
         centerTitle: true,
         title: const Text(
           "Periodo",
@@ -178,7 +177,7 @@ class _PeriodScreenState extends State<PeriodScreen> {
           : ListView.builder(
               itemCount: _allData.length,
               itemBuilder: (context, index) => Card(
-                color: Colors.lime[200],
+                color: Colors.blueAccent[100],
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
                   onTap: () {
@@ -203,7 +202,7 @@ class _PeriodScreenState extends State<PeriodScreen> {
                       IconButton(
                         icon: const Icon(
                           Icons.edit,
-                          color: Colors.blueAccent,
+                          color: Colors.white,
                         ),
                         onPressed: () =>
                             _showDialogPeriod(_allData[index]['id']),
@@ -211,7 +210,7 @@ class _PeriodScreenState extends State<PeriodScreen> {
                       IconButton(
                         icon: const Icon(
                           Icons.delete,
-                          color: Colors.redAccent,
+                          color: Colors.black,
                         ),
                         onPressed: () => _showDeleteConfirmationDialog(
                             _allData[index]['id']),

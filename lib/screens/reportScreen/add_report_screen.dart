@@ -27,8 +27,8 @@ class _AddReportScreenState extends State<AddReportScreen> {
   String _unidad = "";
   String _evaluacion = "";
   String _observaciones = "";
-  String btnText = "agregar reporte";
-  String titleText = "agregar reporte";
+  String btnText = "Agregar reporte";
+  String titleText = "Agregar reporte";
 
   final TextEditingController _dateController = TextEditingController();
 
@@ -70,13 +70,13 @@ class _AddReportScreenState extends State<AddReportScreen> {
       _observaciones = widget.report!.observaciones!;
 
       setState(() {
-        btnText = "actualizar Reporte";
-        titleText = "actualizar Reporte";
+        btnText = "Actualizar Reporte";
+        titleText = "Actualizar Reporte";
       });
     } else {
       setState(() {
-        btnText = "agregar Reporte";
-        titleText = "agregar Reporte";
+        btnText = "Agregar Reporte";
+        titleText = "Agregar Reporte";
       });
     }
     _dateController.text = _dateFormatter.format(_date);
@@ -146,7 +146,6 @@ class _AddReportScreenState extends State<AddReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 139, 181, 252),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
@@ -170,9 +169,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                 Text(
                   titleText,
                   style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -187,7 +184,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
                               labelText: "Semana",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -202,11 +199,11 @@ class _AddReportScreenState extends State<AddReportScreen> {
                         child: TextFormField(
                           readOnly: true,
                           controller: _dateController,
-                          style: const TextStyle(fontSize: 8.0),
+                          style: const TextStyle(fontSize: 18.0),
                           onTap: _handleDatePicker,
                           decoration: InputDecoration(
                               labelText: "fecha",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                         ),
@@ -251,7 +248,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
                               labelText: "Nombre del Docente",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -313,7 +310,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
                               labelText: "Estudiantes Inscritos",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -328,8 +325,8 @@ class _AddReportScreenState extends State<AddReportScreen> {
                         child: TextFormField(
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
-                              labelText: "Estudiantes Presentes",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelText: "Estudiantes presentes en el aula",
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -344,8 +341,8 @@ class _AddReportScreenState extends State<AddReportScreen> {
                         child: TextFormField(
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
-                              labelText: "Uniadad",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelText: "Unidad y contenido abordado",
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -360,8 +357,8 @@ class _AddReportScreenState extends State<AddReportScreen> {
                         child: TextFormField(
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
-                              labelText: "Evaluacion",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelText: "Evaluacion aplicada",
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -377,7 +374,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
                               labelText: "Observaciones",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -389,10 +386,9 @@ class _AddReportScreenState extends State<AddReportScreen> {
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 20.0),
-                        height: 30.0,
+                        height: 50.0,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(15.0)),
                         child: ElevatedButton(
                             onPressed: _submit,
@@ -405,18 +401,17 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           ? Container(
                               margin:
                                   const EdgeInsets.symmetric(vertical: 10.0),
-                              height: 30.0,
+                              height: 50.0,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
                                   borderRadius: BorderRadius.circular(15.0)),
                               child: ElevatedButton(
                                 onPressed: _delete,
                                 child: const Text(
                                   "eliminar",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10.0,
+                                    color: Colors.redAccent,
+                                    fontSize: 20.0,
                                   ),
                                 ),
                               ),

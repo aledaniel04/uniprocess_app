@@ -47,7 +47,6 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(193, 234, 233, 240),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
@@ -69,7 +68,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
             ),
           ),
           Card(
-            color: Colors.lime[200],
+            color: Colors.blueAccent[100],
             margin: const EdgeInsets.all(15),
             child: ListTile(
                 onTap: () {
@@ -106,7 +105,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           ),
           SizedBox(height: 20),
           Card(
-            color: Colors.lime[200],
+            color: Colors.blueAccent[100],
             margin: const EdgeInsets.all(15),
             child: ListTile(
                 onTap: () {
@@ -143,7 +142,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           ),
           SizedBox(height: 20),
           Card(
-            color: Colors.lime[200],
+            color: Colors.blueAccent[100],
             margin: const EdgeInsets.all(15),
             child: ListTile(
                 onTap: () {
@@ -180,7 +179,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           ),
           SizedBox(height: 20),
           Card(
-            color: Colors.lime[200],
+            color: Colors.blueAccent[100],
             margin: const EdgeInsets.all(15),
             child: ListTile(
                 onTap: () {

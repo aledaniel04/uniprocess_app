@@ -235,9 +235,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 192, 199, 212),
+        backgroundColor: Color.fromARGB(255, 227, 229, 234),
         centerTitle: true,
         title: Text(
           "lista de Estudiantes",
@@ -264,7 +263,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                 : ListView.builder(
                     itemCount: _allData.length,
                     itemBuilder: (context, index) => Card(
-                      color: Colors.lime[200],
+                      color: Colors.blueAccent[100],
                       margin: const EdgeInsets.all(15),
                       child: ListTile(
                         onTap: () {},
@@ -303,7 +302,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                             IconButton(
                               icon: const Icon(
                                 Icons.edit,
-                                color: Colors.blueAccent,
+                                color: Colors.white,
                               ),
                               onPressed: () =>
                                   _showDialogList(_allData[index]['id']),
@@ -311,7 +310,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                             IconButton(
                               icon: const Icon(
                                 Icons.delete,
-                                color: Colors.redAccent,
+                                color: Colors.black,
                               ),
                               onPressed: () => _showDeleteConfirmationDialog(
                                   _allData[index]['id']),

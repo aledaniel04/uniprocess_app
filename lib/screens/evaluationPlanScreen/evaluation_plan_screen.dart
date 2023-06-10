@@ -283,12 +283,11 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 192, 199, 212),
+        backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
         title: const Text(
-          "Plan de evaluacion",
+          "Plan de evaluación",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -312,47 +311,75 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
                 : ListView.builder(
                     itemCount: _allData.length,
                     itemBuilder: (context, index) => Card(
-                      color: Colors.lime[200],
+                      color: Colors.blueAccent[100],
                       margin: const EdgeInsets.all(15),
                       child: InkWell(
                         onLongPress: () => _showDeleteConfirmationDialog(
                             _allData[index]['id']),
-                        child: ListTile(
-                          onTap: () =>
-                              _showDialogEvaluation(_allData[index]['id']),
-                          title: Flexible(
-                            child: Text(
-                              _allData[index]['objective'],
-                              style: const TextStyle(fontSize: 20),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                        child: Container(
+                          margin: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(0),
+                            color: Colors.blueAccent[100],
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 4,
+                                spreadRadius: 1,
+                              )
+                            ],
                           ),
-                          subtitle: Flexible(
-                            child: Text(
-                              _allData[index]["content"],
-                              style: const TextStyle(fontSize: 10),
-                              overflow: TextOverflow.ellipsis,
+                          child: ListTile(
+                            leading: Text(
+                              "1",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                (_allData[index]['date']),
-                                style: const TextStyle(fontSize: 10),
+                            onTap: () =>
+                                _showDialogEvaluation(_allData[index]['id']),
+                            title: Flexible(
+                              child: Text(
+                                _allData[index]['objective'],
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(
-                                height: 5,
+                            ),
+                            subtitle: Flexible(
+                              child: Text(
+                                _allData[index]["content"],
+                                style: const TextStyle(fontSize: 15),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              Flexible(
-                                child: Text(
-                                  _allData[index]['assessment'],
-                                  style: const TextStyle(fontSize: 20),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                            ),
+                            trailing: Container(
+                              width:
+                                  120, // Ajusta este valor según tus necesidades
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        _allData[index]['date'],
+                                        style: const TextStyle(fontSize: 18),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      _allData[index]['assessment'],
+                                      style: const TextStyle(fontSize: 18),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

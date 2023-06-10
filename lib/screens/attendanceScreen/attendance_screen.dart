@@ -200,9 +200,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 237, 237, 242),
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent[600],
+        backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
         title: Text(
           "lista de asistencias",
@@ -229,7 +228,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 : ListView.builder(
                     itemCount: _allData.length,
                     itemBuilder: (context, index) => Card(
-                      color: Colors.lime[200],
+                      color: Colors.blueAccent[100],
                       margin: const EdgeInsets.all(15),
                       child: ListTile(
                         onTap: () {},

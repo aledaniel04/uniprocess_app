@@ -162,9 +162,8 @@ class _CareerScreenState extends State<CareerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(193, 234, 233, 240),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 229, 227, 236),
+        backgroundColor: Color.fromARGB(255, 227, 229, 234),
         centerTitle: true,
         title: Text(
           "Carreras",
@@ -191,7 +190,7 @@ class _CareerScreenState extends State<CareerScreen> {
                 : ListView.builder(
                     itemCount: _allData.length,
                     itemBuilder: (context, index) => Card(
-                      color: Colors.lime[200],
+                      color: Colors.blueAccent[100],
                       margin: const EdgeInsets.all(15),
                       child: ListTile(
                         onTap: () {
@@ -217,7 +216,7 @@ class _CareerScreenState extends State<CareerScreen> {
                             IconButton(
                               icon: const Icon(
                                 Icons.edit,
-                                color: Colors.blueAccent,
+                                color: Colors.white,
                               ),
                               onPressed: () =>
                                   _showDialogCareer(_allData[index]['id']),
@@ -225,7 +224,7 @@ class _CareerScreenState extends State<CareerScreen> {
                             IconButton(
                               icon: const Icon(
                                 Icons.delete,
-                                color: Colors.redAccent,
+                                color: Colors.black,
                               ),
                               onPressed: () => _showDeleteConfirmationDialog(
                                   _allData[index]['id']),
