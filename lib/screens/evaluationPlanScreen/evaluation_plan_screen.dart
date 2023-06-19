@@ -189,7 +189,7 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
             },
           ),
           ElevatedButton(
-            child: Text(id == null ? 'Agregar Estudiante' : 'Actualizar'),
+            child: Text(id == null ? 'Agregar Unidad' : 'Actualizar'),
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 if (id == null) {
@@ -309,88 +309,102 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
                     child: CircularProgressIndicator(),
                   )
                 : ListView.builder(
+                    shrinkWrap: true,
                     itemCount: _allData.length,
                     itemBuilder: (context, index) => Card(
-                      color: Colors.blueAccent[100],
                       margin: const EdgeInsets.all(15),
                       child: InkWell(
                         onLongPress: () => _showDeleteConfirmationDialog(
                             _allData[index]['id']),
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(0),
-                            color: Colors.blueAccent[100],
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 4,
-                                spreadRadius: 1,
-                              )
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: Text(
-                              "1",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
+                        child: Column(children: [
+                          ListTile(
+                            contentPadding: const EdgeInsets.all(10),
                             onTap: () =>
                                 _showDialogEvaluation(_allData[index]['id']),
-                            title: Flexible(
-                              child: Text(
-                                _allData[index]['objective'],
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                            title: Text(
+                              _allData[index]['objective'],
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            subtitle: Flexible(
+                            subtitle: Container(
+                              constraints: BoxConstraints(
+                                maxHeight:
+                                    2000, // Ajusta esta altura máxima según tus necesidades
+                              ),
                               child: Text(
                                 _allData[index]["content"],
                                 style: const TextStyle(fontSize: 15),
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            trailing: Container(
-                              width:
-                                  120, // Ajusta este valor según tus necesidades
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        _allData[index]['date'],
-                                        style: const TextStyle(fontSize: 18),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      _allData[index]['assessment'],
+                            /*trailing: Container(
+                            width: 120, // Ajusta este valor según tus necesidades
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      _allData[index]['date'],
                                       style: const TextStyle(fontSize: 18),
                                       overflow: TextOverflow.ellipsis,
                                     ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Flexible(
+                                  child: Text(
+                                    _allData[index]['assessment'],
+                                    style: const TextStyle(fontSize: 18),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),*/
                           ),
-                        ),
+                          const Divider(
+                            color: Colors.black,
+                            thickness: 0.8,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  " ${_allData[index]['date']}",
+                                  style: const TextStyle(fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  " ${_allData[index]['assessment']}",
+                                  style: const TextStyle(fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          )
+                        ]),
                       ),
                     ),
                   ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => _showDialogEvaluation(null),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomRight,
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () => _showDialogEvaluation(null),
+          ),
+        ),
       ),
     );
   }
