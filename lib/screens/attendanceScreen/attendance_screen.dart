@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uniprocess_app/screens/attendanceScreen/db_helper_attendance.dart';
 import 'package:uniprocess_app/screens/studentsList/db_helper_students_list.dart';
 
@@ -24,6 +25,8 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   // All journals
   List<Map<String, dynamic>> _allData = [];
+  final DateFormat _dateFormatter = DateFormat(" yyyy, MMM dd");
+  DateTime _date = DateTime.now();
 
   bool _isLoading = true;
   // This function is used to fetch all data from the database
@@ -36,21 +39,21 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         widget.semester);
 
     final data2 = await DBHelperAttendence.getsingleDataAttendance(
-      widget.period,
-      widget.career,
-      widget.subject,
-      widget.section,
-      widget.semester,
-      "2023-06-05",
-    );
+        widget.period,
+        widget.career,
+        widget.subject,
+        widget.section,
+        widget.semester,
+        _dateController.text);
 
-    print(data);
+    print(data2);
     var newData = data.map((e) {
       var itemIndex =
           data2.indexWhere((element) => element["idstudent"] == e["id"]);
       // var assistance = itemIndex != -1 ? data2[itemIndex]["assistance"] : 0;
       print("item: $itemIndex");
       return {
+        "id": itemIndex != -1 ? data2[itemIndex]["id"] : null,
         "idstudent": e["id"],
         "name": e["name"],
         "lastname": e["lastname"],
@@ -69,8 +72,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   void initState() {
     super.initState();
     _refreshData(); // Loading the diary when the app starts
+    _dateController.text = _dateFormatter.format(_date);
   }
 
+  Future<void> _handleDatePicker() async {
+    final DateTime? date = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (date != null && date != _date) {
+      setState(() {
+        _date = date;
+      });
+      _dateController.text = _dateFormatter.format(date);
+      _refreshData();
+    }
+  }
+
+  final TextEditingController _dateController = TextEditingController();
   /*final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _cedulaController = TextEditingController();*/
@@ -196,6 +217,32 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     ));
     _refreshData();
   }*/
+  Future<void> _addData(var data) async {
+    await DBHelperAttendence.createData(
+        widget.period,
+        widget.career,
+        widget.subject,
+        widget.section,
+        widget.semester,
+        data["idstudent"],
+        _dateController.text,
+        data["assistance"]);
+    _refreshData();
+  }
+
+  Future<void> _updateData(var data) async {
+    await DBHelperAttendence.updateData(
+        data["id"],
+        widget.period,
+        widget.career,
+        widget.subject,
+        widget.section,
+        widget.semester,
+        data["idstudent"],
+        _dateController.text,
+        data["assistance"]);
+    _refreshData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,6 +266,28 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.all(0.8),
+            child: TextFormField(
+              readOnly: true,
+              controller: _dateController,
+              style: const TextStyle(fontSize: 18.0),
+              onTap: _handleDatePicker,
+              decoration: InputDecoration(
+                labelText: "fecha",
+                labelStyle: const TextStyle(fontSize: 18.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Expanded(
             child: _isLoading
@@ -258,16 +327,22 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         trailing: Checkbox(
                           value:
                               _allData[index]["assistance"] == 0 ? false : true,
-                          onChanged: (bool? value) {
+                          onChanged: (bool? value) async {
                             var nuevo = _allData;
                             setState(() {
                               _isLoading = true;
                             });
                             nuevo[index]["assistance"] = value! ? 1 : 0;
-                            setState(() {
+                            print(nuevo[index]);
+                            if (nuevo[index]["id"] == null) {
+                              await _addData(nuevo[index]);
+                            } else {
+                              await _updateData(nuevo[index]);
+                            }
+                            /*setState(() {
                               _isLoading = false;
                               _allData = nuevo;
-                            });
+                            });*/
                           },
                         ),
                       ),

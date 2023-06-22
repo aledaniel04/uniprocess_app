@@ -138,10 +138,10 @@ class _AddUpdateNoteState extends State<AddUpdateNote> {
                                       .format(DateTime.now())
                                       .toString()));
                             }
-                            Navigator.pushReplacement(
+                            /*Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
+                                    builder: (context) => const HomeScreen()));*/
                             titleController.clear();
                             descController.clear();
                           }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uniprocess_app/screens/HomeScreen/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key});
@@ -9,6 +11,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   String? selectedOption;
+  late SharedPreferences _prefs;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -25,8 +28,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedData();
+  }
+
+  void _loadSavedData() async {
+    _prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      selectedOption = prefs.getString('selectedOption');
+      _nameController.text = prefs.getString('name') ?? '';
+      _lastNameController.text = prefs.getString('lastName') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
+      _phoneNumberController.text = prefs.getString('phoneNumber') ?? '';
+    });
+  }
+
+  void _submitForm() async {
+    _prefs = await SharedPreferences.getInstance();
     if (_formKey.currentState!.validate()) {
+      final SharedPreferences prefs = await _prefs;
+      await prefs.setString('selectedOption', selectedOption!);
+      await prefs.setString('name', _nameController.text);
+      await prefs.setString('lastName', _lastNameController.text);
+      await prefs.setString('email', _emailController.text);
+      await prefs.setString('phoneNumber', _phoneNumberController.text);
       // Aquí puedes guardar los datos o realizar alguna acción
       print('Datos guardados:');
       print('Opción seleccionada: $selectedOption');
@@ -170,7 +198,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              // Acción al hacer clic en "Siguiente"
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return HomeScreen(
+                                    grado: selectedOption!,
+                                    nombre: _nameController.text,
+                                    apellido: _lastNameController.text,
+                                  );
+                                }),
+                              );
                             },
                             child: Text('Siguiente'),
                           ),

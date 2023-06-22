@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key});
@@ -9,6 +10,7 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   String? selectedOption;
+  late SharedPreferences _prefs;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -25,9 +27,34 @@ class _UserScreenState extends State<UserScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedData();
+  }
+
+  void _loadSavedData() async {
+    _prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      selectedOption = prefs.getString('selectedOption');
+      _nameController.text = prefs.getString('name') ?? '';
+      _lastNameController.text = prefs.getString('lastName') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
+      _phoneNumberController.text = prefs.getString('phoneNumber') ?? '';
+    });
+  }
+
+  void _submitForm() async {
+    _prefs = await SharedPreferences.getInstance();
     if (_formKey.currentState!.validate()) {
       // Aquí puedes actualizar los datos del usuario o realizar alguna otra acción
+      final SharedPreferences prefs = await _prefs;
+      await prefs.setString('selectedOption', selectedOption!);
+      await prefs.setString('name', _nameController.text);
+      await prefs.setString('lastName', _lastNameController.text);
+      await prefs.setString('email', _emailController.text);
+      await prefs.setString('phoneNumber', _phoneNumberController.text);
       print('Datos actualizados:');
       print('Opción seleccionada: $selectedOption');
       print('Nombre: ${_nameController.text}');
@@ -38,7 +65,9 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Panel de Usuario"),

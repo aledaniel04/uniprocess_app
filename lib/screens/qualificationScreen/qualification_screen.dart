@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uniprocess_app/screens/attendanceScreen/db_helper_attendance.dart';
+import 'package:uniprocess_app/screens/qualificationScreen/add_qualification_screen.dart';
+import 'package:uniprocess_app/screens/qualificationScreen/db_helper_qualification.dart';
 import 'package:uniprocess_app/screens/studentsList/db_helper_students_list.dart';
 
 class QualificationScreen extends StatefulWidget {
@@ -9,13 +10,14 @@ class QualificationScreen extends StatefulWidget {
   final String section;
   final String semester;
   //static const String name = "Period_Screen";
-  const QualificationScreen(
-      {super.key,
-      required this.period,
-      required this.career,
-      required this.subject,
-      required this.section,
-      required this.semester});
+  const QualificationScreen({
+    super.key,
+    required this.period,
+    required this.career,
+    required this.subject,
+    required this.section,
+    required this.semester,
+  });
 
   @override
   State<QualificationScreen> createState() => _QualificationScreenState();
@@ -35,16 +37,9 @@ class _QualificationScreenState extends State<QualificationScreen> {
         widget.section,
         widget.semester);
 
-    final data2 = await DBHelperAttendence.getsingleDataAttendance(
-      widget.period,
-      widget.career,
-      widget.subject,
-      widget.section,
-      widget.semester,
-      "2023-06-05",
-    );
+    final data2 = await DBHelperQualification3.getAllData();
 
-    print(data);
+    print("primera data: $data");
     var newData = data.map((e) {
       var itemIndex =
           data2.indexWhere((element) => element["idstudent"] == e["id"]);
@@ -58,7 +53,7 @@ class _QualificationScreenState extends State<QualificationScreen> {
         "assistance": itemIndex != -1 ? data2[itemIndex]["assistance"] : 0,
       };
     }).toList();
-    print(newData);
+    print("segunda data $newData");
     setState(() {
       _allData = data;
       _isLoading = false;
@@ -105,7 +100,24 @@ class _QualificationScreenState extends State<QualificationScreen> {
                       color: Colors.blueAccent[100],
                       margin: const EdgeInsets.all(15),
                       child: ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return AddQualificationScreen(
+                                  period: widget.period,
+                                  career: widget.career,
+                                  subject: widget.subject,
+                                  section: widget.section,
+                                  semester: widget.semester,
+                                  //idstudent: _allData[index]['id'],
+                                  name: _allData[index]['name'],
+                                  lastname: _allData[index]["lastname"],
+                                  cedula: _allData[index]["cedula"],
+                                );
+                              }),
+                            );
+                          },
                           title: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

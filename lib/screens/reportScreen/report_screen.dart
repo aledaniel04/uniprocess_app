@@ -60,6 +60,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ),
             ),
+            trailing:
+                IconButton(onPressed: () {}, icon: Icon(Icons.picture_as_pdf)),
           ),
           const Divider(
             height: 5.0,

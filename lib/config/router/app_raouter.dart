@@ -3,12 +3,17 @@ import 'package:uniprocess_app/screens/screen.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
-  initialLocation: "/",
+  initialLocation: "/inicio",
   routes: [
-    GoRoute(
+    /*GoRoute(
       path: "/",
       name: HomeScreen.name,
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) =>  HomeScreen(),
+    ),*/
+    GoRoute(
+      path: "/inicio",
+      name: HomeScreen.name,
+      builder: (context, state) => RegisterScreen(),
     ),
     GoRoute(
       path: "/Period",

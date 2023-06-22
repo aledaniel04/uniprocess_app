@@ -318,6 +318,13 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
                             _allData[index]['id']),
                         child: Column(children: [
                           ListTile(
+                            leading: CircleAvatar(
+                              child: Text(
+                                '${index + 1}',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ),
                             contentPadding: const EdgeInsets.all(10),
                             onTap: () =>
                                 _showDialogEvaluation(_allData[index]['id']),
@@ -336,32 +343,6 @@ class _EvaluationPlanScreenState extends State<EvaluationPlanScreen> {
                                 style: const TextStyle(fontSize: 15),
                               ),
                             ),
-                            /*trailing: Container(
-                            width: 120, // Ajusta este valor según tus necesidades
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      _allData[index]['date'],
-                                      style: const TextStyle(fontSize: 18),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Flexible(
-                                  child: Text(
-                                    _allData[index]['assessment'],
-                                    style: const TextStyle(fontSize: 18),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),*/
                           ),
                           const Divider(
                             color: Colors.black,

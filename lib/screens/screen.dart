@@ -1,3 +1,5 @@
+export 'package:uniprocess_app/screens/userScreen/register_screen.dart';
+
 export 'package:uniprocess_app/screens/themeScreen/theme_screen.dart';
 
 export 'package:uniprocess_app/screens/userScreen/user_screen.dart';
