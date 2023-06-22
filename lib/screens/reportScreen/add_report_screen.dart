@@ -21,7 +21,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
   String _sede = "Sede Coro";
   String _docente = "";
   String _carrera = "Ing. Sistema (Coro)";
-  //String _asignatura = "";
+  String _asignatura = "";
   String _estudiantes = "";
   String _estudiantespresent = "";
   String _unidad = "";
@@ -62,7 +62,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
       _date = widget.report!.date!;
       _docente = widget.report!.docente!;
       _carrera = widget.report!.carrera!;
-      //_asignatura = widget.report!.asignatura!;
+      _asignatura = widget.report!.asignatura!;
       _estudiantes = widget.report!.estudiantes!;
       _estudiantespresent = widget.report!.estudiantespresent!;
       _unidad = widget.report!.unidad!;
@@ -103,7 +103,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
   }
 
   _delete() {
-    DBHelperReport.instance.deleteReport(widget.report!.id!);
+    DBHelperReport2.instance.deleteReport(widget.report!.id!);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (_) => ReportScreen()));
     if (widget.updateReportList != null) {
@@ -120,7 +120,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
           sede: _sede,
           docente: _docente,
           carrera: _carrera,
-          //asignatura: _asignatura,
+          asignatura: _asignatura,
           estudiantes: _estudiantes,
           estudiantespresent: _estudiantespresent,
           unidad: _unidad,
@@ -128,12 +128,12 @@ class _AddReportScreenState extends State<AddReportScreen> {
           observaciones: _observaciones);
 
       if (widget.report == null) {
-        DBHelperReport.instance.insertReport(report);
+        DBHelperReport2.instance.insertReport(report);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => ReportScreen()));
       } else {
         report.id = widget.report!.id;
-        DBHelperReport.instance.updateReport(report);
+        DBHelperReport2.instance.updateReport(report);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => ReportScreen()));
       }
@@ -288,13 +288,13 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           value: _carrera,
                         ),
                       ),
-                      /*Padding(
+                      Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: TextFormField(
                           style: const TextStyle(fontSize: 18.0),
                           decoration: InputDecoration(
                               labelText: "asignatura",
-                              labelStyle: const TextStyle(fontSize: 8.0),
+                              labelStyle: const TextStyle(fontSize: 18.0),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0))),
                           validator: (input) => input!.trim().isEmpty
@@ -303,7 +303,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                           onSaved: (input) => _asignatura = input!,
                           initialValue: _asignatura,
                         ),
-                      ),*/
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: TextFormField(

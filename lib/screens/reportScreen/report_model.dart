@@ -5,7 +5,7 @@ class Report {
   String? sede;
   String? docente;
   String? carrera;
-  //String? asignatura;
+  String? asignatura;
   String? estudiantes;
   String? estudiantespresent;
   String? unidad;
@@ -18,7 +18,7 @@ class Report {
       this.sede,
       this.docente,
       this.carrera,
-      //this.asignatura,
+      this.asignatura,
       this.estudiantes,
       this.estudiantespresent,
       this.unidad,
@@ -32,7 +32,7 @@ class Report {
       this.sede,
       this.docente,
       this.carrera,
-      //this.asignatura,
+      this.asignatura,
       this.estudiantes,
       this.estudiantespresent,
       this.unidad,
@@ -51,7 +51,7 @@ class Report {
     map["sede"] = sede;
     map["docente"] = docente;
     map["carrera"] = carrera;
-    //map["asignatura"] = asignatura;
+    map["asignatura"] = asignatura;
     map["estudiantes"] = estudiantes;
     map["estudiantespresent"] = estudiantespresent;
     map["unidad"] = unidad;
@@ -68,7 +68,7 @@ class Report {
       sede: map["sede"],
       docente: map["docente"],
       carrera: map["carrera"],
-      //asignatura: map["asignatura"],
+      asignatura: map["asignatura"],
       estudiantes: map["estudiantes"],
       estudiantespresent: map["estudiantespresent"],
       unidad: map["unidad"],

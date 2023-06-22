@@ -4,12 +4,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uniprocess_app/screens/reportScreen/report_model.dart';
 
-class DBHelperReport {
-  static final DBHelperReport instance = DBHelperReport._instance();
+class DBHelperReport2 {
+  static final DBHelperReport2 instance = DBHelperReport2._instance();
 
   static Database? _db;
 
-  DBHelperReport._instance();
+  DBHelperReport2._instance();
 
   String reportTable = "report_table";
   String colId = "id";
@@ -18,6 +18,7 @@ class DBHelperReport {
   String colSede = "sede";
   String colDocente = "docente";
   String colCarrera = "carrera";
+  String colAsignatura = "asignatura";
   String colEstudiantes = "estudiantes";
   String colEstudiantesPresent = "estudiantespresent";
   String colUnidad = "unidad";
@@ -31,13 +32,13 @@ class DBHelperReport {
 
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    String path = "${dir.path}report_list.db";
+    String path = "${dir.path}report_list2.db";
     final reportListDB =
-        await openDatabase(path, version: 15, onCreate: _createDb);
+        await openDatabase(path, version: 16, onCreate: _createDb2);
     return reportListDB;
   }
 
-  void _createDb(Database db, int version) async {
+  void _createDb2(Database db, int version) async {
     await db.execute("""CREATE TABLE $reportTable(
           $colId INTEGER PRIMARY KEY AUTOINCREMENT, 
           $colWeek TEXT, 
@@ -45,6 +46,7 @@ class DBHelperReport {
           $colSede TEXT, 
           $colDocente TEXT, 
           $colCarrera TEXT,
+          $colAsignatura TEXT,
           $colEstudiantes TEXT,
           $colEstudiantesPresent TEXT,
           $colUnidad,

@@ -4,10 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:uniprocess_app/screens/reportScreen/add_report_screen.dart';
 import 'package:uniprocess_app/screens/reportScreen/db_helper_report.dart';
 import 'package:uniprocess_app/screens/reportScreen/report_model.dart';
-import 'package:flutter/widgets.dart';
 
 class ReportScreen extends StatefulWidget {
-  ReportScreen({super.key});
+  const ReportScreen({super.key});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
@@ -18,7 +17,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
   final DateFormat _dateFormatter = DateFormat("MMM dd, yyyy");
 
-  final DBHelperReport _dbHelperReport = DBHelperReport.instance;
+  final DBHelperReport2 _dbHelperReport = DBHelperReport2.instance;
 
   @override
   void initState() {
@@ -27,7 +26,7 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _updateReportList() {
-    _reportList = DBHelperReport.instance.getNoteList();
+    _reportList = DBHelperReport2.instance.getNoteList();
     print(_reportList);
   }
 

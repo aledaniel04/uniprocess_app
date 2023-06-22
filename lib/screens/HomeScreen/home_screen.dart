@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:uniprocess_app/screens/HomeScreen/db_helper_note.dart';
 import 'package:uniprocess_app/screens/HomeScreen/model_note.dart';
 import 'package:uniprocess_app/screens/screen.dart';
-import 'package:uniprocess_app/screens/userScreen/register_screen.dart';
 import 'package:uniprocess_app/screens/userScreen/theme_dark.dart';
 
 class HomeScreen extends StatefulWidget {
