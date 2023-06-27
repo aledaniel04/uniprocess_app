@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uniprocess_app/screens/HomeScreen/db_helper_note.dart';
@@ -400,7 +399,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor:
                           MaterialStatePropertyAll(Colors.blueAccent[50])),
                   onPressed: () {
-                    context.pushNamed(PeriodScreen.name);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return PeriodScreen();
+                      }),
+                    );
                   },
                   icon: const Icon(Icons.app_registration_outlined),
                   label: const Text("Lista"),

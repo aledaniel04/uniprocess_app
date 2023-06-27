@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uniprocess_app/screens/qualificationScreen/add_qualification_screen.dart';
-import 'package:uniprocess_app/screens/qualificationScreen/db_helper_qualification.dart';
 import 'package:uniprocess_app/screens/studentsList/db_helper_students_list.dart';
+import 'package:marquee/marquee.dart';
 
 class QualificationScreen extends StatefulWidget {
   final String period;
@@ -37,7 +37,7 @@ class _QualificationScreenState extends State<QualificationScreen> {
         widget.section,
         widget.semester);
 
-    final data2 = await DBHelperQualification3.getAllData();
+    final data2 = await DBHelperStudentsList.getAllData();
 
     print("primera data: $data");
     var newData = data.map((e) {
@@ -73,7 +73,7 @@ class _QualificationScreenState extends State<QualificationScreen> {
         backgroundColor: Color.fromARGB(255, 229, 227, 236),
         centerTitle: true,
         title: Text(
-          "lista de asistencias",
+          "lista de Notas",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -83,9 +83,16 @@ class _QualificationScreenState extends State<QualificationScreen> {
             padding: const EdgeInsets.only(left: 10),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              child: SizedBox(
+                height: 50,
+                child: Marquee(
+                  text:
+                      "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester} ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  scrollAxis: Axis.horizontal,
+                  blankSpace: 20.0,
+                  velocity: 100.0,
+                ),
               ),
             ),
           ),

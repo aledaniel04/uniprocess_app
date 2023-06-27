@@ -40,13 +40,13 @@ class _AddQualificationScreen extends State<AddQualificationScreen> {
   bool _isLoading = true;
   // This function is used to fetch all data from the database
   void _refreshData() async {
-    final data = await DBHelperQualification3.getsingleDataQualification(
+    final data = await DBHelperQualification4.getsingleDataQualification(
         widget.period,
         widget.career,
         widget.subject,
         widget.section,
         widget.semester,
-        //widget.idstudent,
+        widget.idstudent,
         widget.name,
         widget.lastname,
         widget.cedula);
@@ -240,13 +240,13 @@ class _AddQualificationScreen extends State<AddQualificationScreen> {
 
 // Insert a new period to the database
   Future<void> _addData() async {
-    await DBHelperQualification3.createData(
+    await DBHelperQualification4.createData(
         widget.period,
         widget.career,
         widget.subject,
         widget.section,
         widget.semester,
-        //widget.idstudent,
+        widget.idstudent,
         widget.name,
         widget.lastname,
         widget.cedula,
@@ -258,14 +258,14 @@ class _AddQualificationScreen extends State<AddQualificationScreen> {
 
   // Update an existing period
   Future<void> _updateData(int id) async {
-    await DBHelperQualification3.updateData(
+    await DBHelperQualification4.updateData(
         id,
         widget.period,
         widget.career,
         widget.subject,
         widget.section,
         widget.semester,
-        //widget.idstudent,
+        widget.idstudent,
         widget.name,
         widget.lastname,
         widget.cedula,
@@ -277,7 +277,7 @@ class _AddQualificationScreen extends State<AddQualificationScreen> {
 
   // Delete an item
   void _deleteItem(int id) async {
-    await DBHelperQualification3.deleteData(id);
+    await DBHelperQualification4.deleteData(id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.redAccent,
       content: Text('eliminaste un calificación'),

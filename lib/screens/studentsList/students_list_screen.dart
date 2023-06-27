@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uniprocess_app/screens/studentsList/db_helper_students_list.dart';
+import 'package:marquee/marquee.dart';
 
 class StudentsListScreen extends StatefulWidget {
   final String period;
@@ -249,9 +250,16 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
             padding: const EdgeInsets.only(left: 10),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              child: SizedBox(
+                height: 50,
+                child: Marquee(
+                  text:
+                      "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester} ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  scrollAxis: Axis.horizontal,
+                  blankSpace: 20.0,
+                  velocity: 100.0,
+                ),
               ),
             ),
           ),

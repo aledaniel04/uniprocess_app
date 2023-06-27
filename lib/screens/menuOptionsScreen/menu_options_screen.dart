@@ -4,6 +4,7 @@ import 'package:uniprocess_app/screens/evaluationPlanScreen/evaluation_plan_scre
 import 'package:uniprocess_app/screens/menuOptionsScreen/db_helper_menu_options.dart';
 import 'package:uniprocess_app/screens/qualificationScreen/qualification_screen.dart';
 import 'package:uniprocess_app/screens/studentsList/students_list_screen.dart';
+import 'package:marquee/marquee.dart';
 
 class MenuOptionsScreen extends StatefulWidget {
   final String period;
@@ -61,9 +62,16 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
             padding: const EdgeInsets.only(left: 10),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              child: SizedBox(
+                height: 50,
+                child: Marquee(
+                  text:
+                      "${widget.period} > ${widget.career} > ${widget.subject} > ${widget.section} > ${widget.semester} ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  scrollAxis: Axis.horizontal,
+                  blankSpace: 20.0,
+                  velocity: 100.0,
+                ),
               ),
             ),
           ),
