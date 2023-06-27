@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uniprocess_app/screens/HomeScreen/db_helper_note.dart';
 import 'package:uniprocess_app/screens/HomeScreen/model_note.dart';
 import 'package:uniprocess_app/screens/screen.dart';
@@ -8,14 +9,15 @@ import 'package:uniprocess_app/screens/userScreen/theme_dark.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String name = "Home_Screen";
-  final String grado;
-  final String nombre;
-  final String apellido;
-  const HomeScreen(
-      {super.key,
-      required this.grado,
-      required this.nombre,
-      required this.apellido});
+  //final String grado;
+  //final String nombre;
+  //final String apellido;
+  const HomeScreen({
+    super.key,
+    //required this.grado,
+    //required this.nombre,
+    //required this.apellido
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -24,13 +26,42 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DBHelperNote? dbHelperNote;
   late Future<List<NoteModel>> dataList;
+  late SharedPreferences _prefs;
+  String? selectedOption;
   final _fromkey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _phoneNumberController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     dbHelperNote = DBHelperNote();
     loadData();
+    _loadSavedData();
+  }
+
+  void _loadSavedData() async {
+    _prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    print(_prefs);
+    setState(() {
+      selectedOption = prefs.getString('selectedOption');
+      _nameController.text = prefs.getString('name') ?? '';
+      _lastNameController.text = prefs.getString('lastName') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
+      _phoneNumberController.text = prefs.getString('phoneNumber') ?? '';
+    });
   }
 
   loadData() async {
@@ -290,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               child: Text(
-                "Bienvenido ${widget.grado} ${widget.nombre} ${widget.apellido}",
+                "Bienvenido $selectedOption ${_nameController.text} ${_lastNameController.text}",
                 style: const TextStyle(
                   color: Color.fromARGB(255, 51, 50, 53),
                   fontSize: 25.0,
@@ -351,6 +382,16 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return const RegisterScreen();
+                    }),
+                  );
+                },
+                icon: const Icon(Icons.app_registration)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

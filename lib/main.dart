@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:uniprocess_app/config/router/app_raouter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uniprocess_app/config/theme/app_theme.dart';
-import 'package:uniprocess_app/config/theme/theme_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uniprocess_app/screens/userScreen/register_screen.dart';
+import 'package:uniprocess_app/screens/HomeScreen/home_screen.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final bool hasUserData = await _checkUserData();
+
+  runApp(MyApp(
+    hasUserData: hasUserData,
+  ));
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+Future<bool> _checkUserData() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Verifica si existen datos guardados en el SharedPreferences
+  final bool hasUserData =
+      prefs.getString('selectedOption') != null && // Revisa una de las claves
+          prefs.getString('name') != null &&
+          prefs.getString('lastName') != null &&
+          prefs.getString('email') != null &&
+          prefs.getString('phoneNumber') != null;
+
+  return hasUserData;
+}
+
+class MyApp extends StatelessWidget {
+  final bool hasUserData;
+
+  const MyApp({
+    required this.hasUserData,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AppTheme appTheme = ref.watch(themeNotifierProvider);
-
-    return MaterialApp.router(
-      routerConfig: appRouter,
+  Widget build(BuildContext context) {
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: appTheme.getTheme(),
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
+      home: hasUserData ? HomeScreen() : RegisterScreen(),
     );
   }
 }

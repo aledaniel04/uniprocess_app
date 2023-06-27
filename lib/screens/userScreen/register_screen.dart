@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uniprocess_app/screens/HomeScreen/home_screen.dart';
 
@@ -37,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _loadSavedData() async {
     _prefs = await SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
+    print(_prefs);
     setState(() {
       selectedOption = prefs.getString('selectedOption');
       _nameController.text = prefs.getString('name') ?? '';
@@ -55,14 +57,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await prefs.setString('lastName', _lastNameController.text);
       await prefs.setString('email', _emailController.text);
       await prefs.setString('phoneNumber', _phoneNumberController.text);
-      // Aquí puedes guardar los datos o realizar alguna acción
-      print('Datos guardados:');
-      print('Opción seleccionada: $selectedOption');
-      print('Nombre: ${_nameController.text}');
-      print('Apellidos: ${_lastNameController.text}');
-      print('Correo electrónico: ${_emailController.text}');
-      print('Número telefónico: ${_phoneNumberController.text}');
+      Fluttertoast.showToast(
+        msg: '¡Los datos se guardaron exitosamente!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return HomeScreen();
+          }),
+        );
+      });
     }
+  }
+
+  void _clearData() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.clear();
+    setState(() {
+      selectedOption = null;
+      _nameController.text = '';
+      _lastNameController.text = '';
+      _emailController.text = '';
+      _phoneNumberController.text = '';
+    });
   }
 
   @override
@@ -197,19 +217,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style: ButtonStyle(),
                           ),
                           ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return HomeScreen(
-                                    grado: selectedOption!,
-                                    nombre: _nameController.text,
-                                    apellido: _lastNameController.text,
-                                  );
-                                }),
-                              );
-                            },
-                            child: Text('Siguiente'),
+                            onPressed: _clearData,
+                            child: const Text('Eliminar datos'),
                           ),
                         ],
                       ),

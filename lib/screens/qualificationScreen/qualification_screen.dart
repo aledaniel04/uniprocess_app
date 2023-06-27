@@ -110,7 +110,7 @@ class _QualificationScreenState extends State<QualificationScreen> {
                                   subject: widget.subject,
                                   section: widget.section,
                                   semester: widget.semester,
-                                  //idstudent: _allData[index]['id'],
+                                  idstudent: _allData[index]['id'],
                                   name: _allData[index]['name'],
                                   lastname: _allData[index]["lastname"],
                                   cedula: _allData[index]["cedula"],

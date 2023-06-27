@@ -129,12 +129,12 @@ class _AddReportScreenState extends State<AddReportScreen> {
 
       if (widget.report == null) {
         DBHelperReport2.instance.insertReport(report);
-        Navigator.pushReplacement(
+        Navigator.pop(
             context, MaterialPageRoute(builder: (_) => ReportScreen()));
       } else {
         report.id = widget.report!.id;
         DBHelperReport2.instance.updateReport(report);
-        Navigator.pushReplacement(
+        Navigator.pop(
             context, MaterialPageRoute(builder: (_) => ReportScreen()));
       }
       if (widget.updateReportList != null) {
@@ -233,6 +233,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18.0))),
                           validator: (input) =>
+                              // ignore: unnecessary_null_comparison
                               _sedess == null ? "seleccione una sede" : null,
                           onChanged: (value) {
                             setState(() {
@@ -279,6 +280,7 @@ class _AddReportScreenState extends State<AddReportScreen> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18.0))),
                           validator: (input) =>
+                              // ignore: unnecessary_null_comparison
                               _carrerass == null ? "seleccione una sede" : null,
                           onChanged: (value) {
                             setState(() {

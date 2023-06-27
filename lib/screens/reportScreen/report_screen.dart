@@ -17,8 +17,6 @@ class _ReportScreenState extends State<ReportScreen> {
 
   final DateFormat _dateFormatter = DateFormat("MMM dd, yyyy");
 
-  final DBHelperReport2 _dbHelperReport = DBHelperReport2.instance;
-
   @override
   void initState() {
     super.initState();

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uniprocess_app/screens/HomeScreen/home_screen.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key});
@@ -36,6 +38,7 @@ class _UserScreenState extends State<UserScreen> {
   void _loadSavedData() async {
     _prefs = await SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
+    print(_prefs);
     setState(() {
       selectedOption = prefs.getString('selectedOption');
       _nameController.text = prefs.getString('name') ?? '';
@@ -48,29 +51,45 @@ class _UserScreenState extends State<UserScreen> {
   void _submitForm() async {
     _prefs = await SharedPreferences.getInstance();
     if (_formKey.currentState!.validate()) {
-      // Aquí puedes actualizar los datos del usuario o realizar alguna otra acción
       final SharedPreferences prefs = await _prefs;
       await prefs.setString('selectedOption', selectedOption!);
       await prefs.setString('name', _nameController.text);
       await prefs.setString('lastName', _lastNameController.text);
       await prefs.setString('email', _emailController.text);
       await prefs.setString('phoneNumber', _phoneNumberController.text);
-      print('Datos actualizados:');
-      print('Opción seleccionada: $selectedOption');
-      print('Nombre: ${_nameController.text}');
-      print('Apellidos: ${_lastNameController.text}');
-      print('Correo electrónico: ${_emailController.text}');
-      print('Número telefónico: ${_phoneNumberController.text}');
+      Fluttertoast.showToast(
+        msg: '¡Los datos se actualizaron exitosamente!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return HomeScreen();
+          }),
+        );
+      });
     }
   }
 
+  void _clearData() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.clear();
+    setState(() {
+      selectedOption = null;
+      _nameController.text = '';
+      _lastNameController.text = '';
+      _emailController.text = '';
+      _phoneNumberController.text = '';
+    });
+  }
+
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Panel de Usuario"),
+        title: const Text("Panel de usuario"),
       ),
       body: SafeArea(
         child: Padding(
@@ -80,13 +99,12 @@ class _UserScreenState extends State<UserScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                  height: 80,
-                  child: Icon(
-                    Icons.person,
-                    size: 200,
-                  ),
-                ),
-                SizedBox(height: 110),
+                    height: 240,
+                    child: Icon(
+                      Icons.person,
+                      size: 250,
+                    )),
+                SizedBox(height: 10),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -197,13 +215,12 @@ class _UserScreenState extends State<UserScreen> {
                         children: [
                           ElevatedButton(
                             onPressed: _submitForm,
-                            child: Text('Actualizar'),
+                            child: Text('Actualizar datos'),
+                            style: ButtonStyle(),
                           ),
                           ElevatedButton(
-                            onPressed: () {
-                              // Acción al hacer clic en "Cancelar"
-                            },
-                            child: Text('Cancelar'),
+                            onPressed: _clearData,
+                            child: const Text('Eliminar datos'),
                           ),
                         ],
                       ),

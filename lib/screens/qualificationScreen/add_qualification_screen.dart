@@ -8,7 +8,7 @@ class AddQualificationScreen extends StatefulWidget {
   final String subject;
   final String section;
   final String semester;
-  //final int idstudent;
+  final int idstudent;
   final String name;
   final String lastname;
   final String cedula;
@@ -20,7 +20,7 @@ class AddQualificationScreen extends StatefulWidget {
     required this.subject,
     required this.section,
     required this.semester,
-    //required this.idstudent,
+    required this.idstudent,
     required this.name,
     required this.lastname,
     required this.cedula,
@@ -50,10 +50,10 @@ class _AddQualificationScreen extends State<AddQualificationScreen> {
         widget.name,
         widget.lastname,
         widget.cedula);
-    final data2 = await DBHelperQualification3.getAllData();
+    //final data2 = await DBHelperQualification3.getAllData();
     setState(() {
       _allData = data;
-      _allData = data2;
+      //_allData = data2;
       _isLoading = false;
       print(_allData);
     });

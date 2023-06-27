@@ -33,6 +33,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     '4:45-5:30',
   ];
 
+  //final TextEditingController _asignaturaController = TextEditingController();
+
   double secondListTileHeight = 50.0; // Altura inicial del segundo ListTile
 
   @override
